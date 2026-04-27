@@ -70,13 +70,22 @@ a{color:inherit;text-decoration:none}
   font-weight:400;color:#bbb;margin-top:16px;
 }
 .scroll-cue{
-  position:absolute;bottom:40px;left:50%;
+  position:absolute;bottom:32px;left:50%;
   transform:translateX(-50%);
-  font-size:24px;color:#666;
-  animation:pulse-cue 2s ease-in-out infinite;
+  width:1px;height:48px;
+  overflow:hidden;
 }
-@keyframes pulse-cue{
-  0%,100%{opacity:1}50%{opacity:0.4}
+.scroll-cue::after{
+  content:'';
+  display:block;
+  width:1px;height:48px;
+  background:linear-gradient(to bottom,transparent,#666);
+  animation:scroll-line 2s ease-in-out infinite;
+}
+@keyframes scroll-line{
+  0%{transform:translateY(-100%)}
+  50%{transform:translateY(0)}
+  100%{transform:translateY(100%)}
 }
 .hero-about{
   position:absolute;top:32px;right:clamp(24px,5vw,60px);
@@ -295,7 +304,7 @@ a{color:inherit;text-decoration:none}
   <a class="hero-about" onclick="showAbout()">ABOUT</a>
   <div class="hero-wordmark">FYSH</div>
   <div class="hero-tagline">Tactical intelligence infrastructure.</div>
-  <div class="scroll-cue" aria-hidden="true">&darr;</div>
+  <div class="scroll-cue" aria-hidden="true"></div>
 </section>
 
 <!-- EHW -->
