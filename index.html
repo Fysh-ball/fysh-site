@@ -2593,12 +2593,13 @@ var qrcode = function() {
       var hit = islandAvoid(islands[j]);
       if (hit) { sumDelta += hit.delta * hit.weight; sumWeight += hit.weight; maxWeight = Math.max(maxWeight, hit.weight); }
     }
-    var heroHit = heroAvoid();
-    if (heroHit) { sumDelta += heroHit.delta * heroHit.weight; sumWeight += heroHit.weight; maxWeight = Math.max(maxWeight, heroHit.weight); }
     var borderHit = borderAvoid();
     if (borderHit) { sumDelta += borderHit.delta * borderHit.weight; sumWeight += borderHit.weight; maxWeight = Math.max(maxWeight, borderHit.weight); }
-    var mouthX = shark.x + Math.cos(shark.angle) * 30, mouthY = shark.y + Math.sin(shark.angle) * 30;
-    if (sumWeight > 0) {
+    var hardWeight = sumWeight;
+    var heroHit = heroAvoid();
+    var mouthX = shark.x + Math.cos(shark.angle) * 45, mouthY = shark.y + Math.sin(shark.angle) * 45;
+    if (hardWeight > 0) {
+      if (heroHit) { sumDelta += heroHit.delta * heroHit.weight; sumWeight += heroHit.weight; maxWeight = Math.max(maxWeight, heroHit.weight); }
       desiredAngle = shark.angle + sumDelta / sumWeight;
       turnRate = 0.05 + maxWeight * 0.16;
     } else if (foods.length) {
@@ -2612,6 +2613,9 @@ var qrcode = function() {
       targetSpeed = 3.2;
       var dmx = nearest.x - mouthX, dmy = nearest.y - mouthY;
       if (dmx * dmx + dmy * dmy < 900) { foods.splice(foods.indexOf(nearest), 1); spawnRipple(nearest.x, nearest.y, 0.9); }
+    } else if (heroHit) {
+      desiredAngle = shark.angle + heroHit.delta;
+      turnRate = 0.05 + heroHit.weight * 0.16;
     } else {
       shark.wander += (Math.random() - 0.5) * 0.006;
       shark.wander = Math.max(-0.03, Math.min(0.03, shark.wander));
@@ -2820,7 +2824,7 @@ var qrcode = function() {
     ctxC.save();
     ctxC.translate(shark.x, shark.y);
     ctxC.rotate(shark.angle);
-    ctxC.scale(2, 2);
+    ctxC.scale(3, 3);
     drawSharkRealistic(ctxC, shark.wob);
     ctxC.restore();
   }
