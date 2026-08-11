@@ -3,522 +3,3272 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fysh -- Tactical Intelligence Infrastructure</title>
-<meta name="description" content="Fysh builds tactical intelligence tools. Event Horizon Web, Red Rocket, grab, Angler.">
+<title>Fysh — An ocean of possibilities</title>
+<meta name="description" content="Fysh builds small, focused open-source tools: Grab (AGPL-3.0 downloader), Event Horizon Web (AGPL-3.0 event monitor), Red Rocket (AGPL-3.0 Android app), and Warp Gate (AGPL-3.0 file transfer).">
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{
-  background:#0a0a0a;
-  color:#f0f0f0;
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
-  -webkit-font-smoothing:antialiased;
-  cursor:default;
-}
-body{background:#0a0a0a;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-.mono{font-family:'SF Mono','Fira Code','Cascadia Code',monospace}
+  :root { color-scheme: dark; }
+  html, body { margin: 0; padding: 0; background: #000; overflow: hidden; height: 100%; }
+  * { box-sizing: border-box; }
+  a { text-decoration: none; color: inherit; }
+  ul { margin: 0; padding: 0; list-style: none; }
+  body {
+    font-family: ui-sans-serif, "Inter", "Segoe UI", system-ui, sans-serif;
+    background: #000; color: #f2f2f5;
+  }
+  .mono { font-family: ui-monospace, "JetBrains Mono", "SF Mono", Consolas, monospace; }
 
-/* ========== LANDING ========== */
-#landing{display:block}
-#landing.hidden{display:none}
+  /* shared nav / footer, transparent so canvases show through */
+  .topnav { display: flex; align-items: center; justify-content: space-between; padding: 20px 44px; position: relative; z-index: 5; pointer-events: none; }
+  .topnav .logo { font-weight: 700; font-size: 15px; }
+  .logo-btn { background: none; border: none; color: #fff; font-family: inherit; cursor: pointer; padding: 8px 10px; margin: -8px -10px; pointer-events: auto; }
+  .logo-btn:hover { color: #9ad; }
+  .fps-badge { position: fixed; bottom: 10px; right: 12px; z-index: 50; font: 11px/1.4 monospace; color: rgba(255,255,255,0.45); pointer-events: none; }
+  .foot { position: relative; z-index: 5; padding: 20px 44px 34px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 12.5px; color: #6b6b76; pointer-events: none; }
+  .instr { text-align: center; font-family: ui-monospace, monospace; font-size: 11.5px; letter-spacing: .06em; color: #6b6b76; margin: 0 auto 18px; }
 
-.snap-container{
-  height:100vh;
-  overflow-y:scroll;
-  scroll-snap-type:y proximity;
-  scroll-behavior:smooth;
-  scrollbar-width:none;
-  -ms-overflow-style:none;
-}
-.snap-container::-webkit-scrollbar{display:none}
-
-.section{
-  scroll-snap-align:start;
-  height:100vh;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative;
-  padding:0 clamp(24px,5vw,80px);
-}
-
-/* Animations */
-.anim{
-  opacity:0;
-  transform:translateY(24px);
-  transition:opacity 0.6s ease-out,transform 0.6s ease-out;
-}
-.anim.visible{opacity:1;transform:translateY(0)}
-
-/* Dividers */
-.section+.section::before{
-  content:'';position:absolute;top:0;left:50%;
-  transform:translateX(-50%);
-  width:min(80%,800px);height:1px;background:#1a1a1a;
-}
-
-/* ---- HERO ---- */
-.hero{flex-direction:column}
-.hero-wordmark{
-  font-size:clamp(72px,12vw,140px);
-  font-weight:700;letter-spacing:-4px;
-  color:#f0f0f0;line-height:1;
-}
-.hero-tagline{
-  font-size:clamp(16px,2.5vw,24px);
-  font-weight:400;color:#bbb;margin-top:16px;
-}
-.scroll-cue{
-  position:absolute;bottom:32px;left:50%;
-  transform:translateX(-50%);
-  width:1px;height:48px;
-  overflow:hidden;
-}
-.scroll-cue::after{
-  content:'';
-  display:block;
-  width:1px;height:48px;
-  background:linear-gradient(to bottom,transparent,#666);
-  animation:scroll-line 2s ease-in-out infinite;
-}
-@keyframes scroll-line{
-  0%{transform:translateY(-100%)}
-  50%{transform:translateY(0)}
-  100%{transform:translateY(100%)}
-}
-.hero-about{
-  position:absolute;top:32px;right:clamp(24px,5vw,60px);
-  font-family:'SF Mono','Fira Code','Cascadia Code',monospace;
-  font-size:12px;letter-spacing:2px;color:#888;cursor:pointer;
-}
-.hero-about:hover{color:#ccc}
-
-/* ---- PRODUCTS ---- */
-.product{
-  width:100%;max-width:1200px;
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:clamp(40px,6vw,100px);align-items:center;
-}
-.product.reverse .product-content{order:2}
-.product.reverse .product-visual{order:1}
-.eyebrow{
-  font-family:'SF Mono','Fira Code','Cascadia Code',monospace;
-  font-size:11px;letter-spacing:3px;margin-bottom:20px;
-  text-transform:uppercase;
-}
-.product-heading{
-  font-size:clamp(36px,5vw,56px);font-weight:700;
-  color:#f0f0f0;line-height:1.1;margin-bottom:20px;
-}
-.product-sub{
-  font-size:clamp(15px,1.8vw,18px);font-weight:300;
-  color:#bbbbbb;line-height:1.6;margin-bottom:32px;font-weight:400;
-}
-.feature-list{
-  list-style:none;display:flex;flex-direction:column;
-  gap:12px;margin-bottom:36px;
-}
-.feature-list li{
-  font-family:'SF Mono','Fira Code','Cascadia Code',monospace;
-  font-size:14px;color:#cccccc;
-}
-.cta-link{
-  font-family:'SF Mono','Fira Code','Cascadia Code',monospace;
-  font-size:14px;letter-spacing:2px;color:#00ff88;
-  text-decoration:none;cursor:pointer;
-}
-.cta-link:hover{text-decoration:underline}
-.cta-badge{
-  font-family:'SF Mono','Fira Code','Cascadia Code',monospace;
-  font-size:13px;letter-spacing:2px;cursor:default;
-}
-.product-visual{
-  display:flex;align-items:center;justify-content:center;
-  position:relative;min-height:300px;
-}
-.watermark-ehw{
-  font-size:clamp(120px,18vw,200px);font-weight:900;
-  color:#00ff88;opacity:0.6;user-select:none;line-height:1;
-}
-
-/* Red Rocket visual */
-.rr-visual{
-  font-size:clamp(60px,8vw,120px);font-weight:900;
-  color:#ff3b30;opacity:0.6;user-select:none;line-height:1;
-}
-
-/* Angler fish */
-.fish-icon{
-  font-family:'SF Mono','Fira Code','Cascadia Code',monospace;
-  font-size:clamp(48px,7vw,80px);color:#00ff88;opacity:0.7;
-  animation:fish-pulse 3s ease-in-out infinite;user-select:none;
-}
-@keyframes fish-pulse{
-  0%,100%{transform:scale(1)}50%{transform:scale(1.02)}
-}
-
-/* ---- ANGLER ---- */
-.angler-section{flex-direction:column;text-align:center}
-.angler-inner{max-width:680px}
-.angler-heading{
-  font-size:clamp(48px,8vw,80px);font-weight:700;
-  color:#f0f0f0;letter-spacing:-3px;line-height:1;margin-bottom:20px;
-}
-.angler-sub{
-  font-size:clamp(15px,1.8vw,18px);font-weight:300;
-  color:#bbbbbb;line-height:1.6;margin-bottom:48px;font-weight:400;
-}
-.spec-grid{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:16px 48px;margin-bottom:40px;text-align:left;
-  max-width:480px;margin-left:auto;margin-right:auto;
-}
-.spec-label{
-  font-family:'SF Mono','Fira Code','Cascadia Code',monospace;
-  color:#aaa;font-size:11px;letter-spacing:2px;margin-bottom:4px;
-}
-.spec-value{
-  font-family:'SF Mono','Fira Code','Cascadia Code',monospace;
-  color:#ccc;font-size:14px;
-}
-.status-badge{
-  font-family:'SF Mono','Fira Code','Cascadia Code',monospace;
-  font-size:12px;color:#888888;letter-spacing:4px;
-  border:1px solid #444444;padding:6px 16px;display:inline-block;
-}
-
-/* ---- FOOTER ---- */
-.footer{
-  scroll-snap-align:start;min-height:200px;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:60px 24px;gap:16px;
-}
-.footer-wordmark{font-size:24px;font-weight:700;color:#666666}
-.footer-products{
-  font-family:'SF Mono','Fira Code','Cascadia Code',monospace;
-  font-size:12px;color:#555555;letter-spacing:2px;
-}
-.footer-copy{font-size:11px;color:#444444}
-.footer-about{
-  font-family:'SF Mono','Fira Code','Cascadia Code',monospace;
-  font-size:11px;color:#888;cursor:pointer;margin-top:8px;
-}
-.footer-about:hover{color:#ccc}
-
-/* ========== ABOUT ========== */
-#about-page{display:none;min-height:100vh}
-#about-page.active{display:block}
-
-.about-container{
-  max-width:720px;margin:0 auto;
-  padding:120px clamp(24px,5vw,40px);
-}
-.about-back{
-  font-family:'SF Mono','Fira Code','Cascadia Code',monospace;
-  font-size:13px;color:#888;cursor:pointer;
-  display:inline-block;margin-bottom:80px;
-}
-.about-back:hover{color:#f0f0f0}
-
-.about-wordmark{
-  font-size:clamp(48px,10vw,72px);font-weight:700;
-  letter-spacing:-3px;color:#f0f0f0;line-height:1;
-}
-.about-tagline{
-  font-size:18px;color:#bbb;margin-top:12px;
-}
-.about-mission{
-  font-size:clamp(18px,2.5vw,24px);font-weight:300;
-  line-height:1.7;color:#ddd;max-width:600px;margin-top:32px;font-weight:400;
-}
-.about-divider{
-  height:1px;background:#333;margin:80px 0;
-}
-.about-label{
-  font-family:'SF Mono','Fira Code','Cascadia Code',monospace;
-  font-size:11px;letter-spacing:3px;margin-bottom:20px;
-  text-transform:uppercase;
-}
-.founder-name{
-  font-size:clamp(32px,6vw,48px);font-weight:700;
-  color:#f0f0f0;margin-bottom:8px;
-}
-.founder-role{
-  font-family:'SF Mono','Fira Code','Cascadia Code',monospace;
-  font-size:14px;color:#aaa;margin-bottom:24px;
-}
-.founder-bio{
-  font-size:16px;font-weight:400;color:#ccc;line-height:1.7;
-}
-
-.about-product{margin-bottom:32px}
-.about-product-name{
-  font-size:20px;font-weight:600;color:#f0f0f0;margin-bottom:4px;
-}
-.about-product-desc{
-  font-size:14px;color:#aaa;margin-bottom:6px;
-}
-.about-product-link{
-  font-family:'SF Mono','Fira Code','Cascadia Code',monospace;
-  font-size:13px;color:#00ff88;cursor:pointer;
-}
-.about-product-link:hover{text-decoration:underline}
-.about-product-badge{
-  font-family:'SF Mono','Fira Code','Cascadia Code',monospace;
-  font-size:13px;color:#999;
-}
-.about-footer{
-  font-size:12px;color:#777;text-align:center;margin-top:80px;
-}
-
-/* ========== MOBILE ========== */
-@media(max-width:768px){
-  .product{grid-template-columns:1fr;gap:40px;text-align:center}
-  .product.reverse .product-content{order:1}
-  .product.reverse .product-visual{order:2}
-  .product-visual{min-height:120px}
-  .feature-list{align-items:center}
-  .section{padding:0 24px}
-  .spec-grid{grid-template-columns:1fr;gap:20px;text-align:center}
-  .spec-grid .spec-item{text-align:center}
-}
-
-@media(prefers-reduced-motion:reduce){
-  .anim{opacity:1;transform:none;transition:none}
-  .scroll-cue{animation:none;opacity:0.4}
-  .fish-icon{animation:none}
-  .snap-container{scroll-behavior:auto}
-}
+  /* ============================= VIEW C: TIDELINE ============================= */
+  .vC { position: relative; min-height: 100vh; }
+  #canvasC { position: fixed; inset: 0; z-index: 0; display: block; }
+  .vC .hero { position: relative; z-index: 5; padding: 100px 24px 6px; text-align: center; pointer-events: none; }
+  .vC .hero h1 { font-family: ui-monospace, monospace; font-size: 36px; line-height: 1.2; font-weight: 700; margin: 0 auto 12px; letter-spacing: -0.01em; max-width: 22ch; }
+  .vC .hero p { font-size: 14.5px; color: #9a9aa6; max-width: 44ch; margin: 0 auto; }
+  .vC .list { position: relative; z-index: 5; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; padding: 32px 24px 22px; pointer-events: none; }
+  .vC .iconsBelow { padding: 0 24px 100px; }
+  .vC .foot { justify-content: center; position: fixed; left: 0; right: 0; bottom: 0; }
+  .vC .chip {
+    font-family: ui-monospace, monospace; font-size: 12.5px; padding: 10px 16px; border-radius: 999px;
+    border: 1px solid #262630; background: rgba(0,0,0,.55); color: #d6d6de; display: inline-flex; align-items: center; gap: 8px;
+    cursor: pointer; pointer-events: auto;
+  }
+  .vC .chip:hover { border-color: var(--c); color: #fff; }
+  .vC .chip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c); }
+  .vC .chip .chipIcon { display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px; font-size: 14px; line-height: 1; color: var(--c); }
+  .vC .chip .chipIcon svg { width: 100%; height: 100%; fill: var(--c); }
+  .projectModal { position: fixed; inset: 0; z-index: 40; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.15s ease; }
+  .projectModal.open { opacity: 1; pointer-events: auto; }
+  .projectModal .backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(2px); }
+  .projectModal .panel {
+    position: relative; z-index: 1; width: 100%; max-width: 380px; background: #0c0c11; border: 1px solid #262630;
+    border-radius: 14px; padding: 24px 24px 20px; font-family: ui-monospace, monospace; color: #d6d6de;
+    transform: translateY(6px) scale(0.98); transition: transform 0.15s ease;
+  }
+  .projectModal.open .panel { transform: translateY(0) scale(1); }
+  .projectModal .pmHead { display: flex; align-items: center; gap: 9px; margin-bottom: 4px; }
+  .projectModal .pmDot { width: 9px; height: 9px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px var(--c); }
+  .projectModal .pmName { font-size: 17px; font-weight: 700; color: #fff; }
+  .projectModal .pmTag { font-size: 11.5px; color: var(--c); margin: 0 0 14px 18px; letter-spacing: 0.02em; }
+  .projectModal .pmDesc { font-size: 13px; line-height: 1.55; color: #a8a8b3; margin: 0 0 18px; }
+  .projectModal .pmVisit { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--c); text-decoration: none; border: 1px solid var(--c); border-radius: 999px; padding: 8px 14px; }
+  .projectModal .pmVisit:hover { background: var(--c); color: #0c0c11; }
+  .projectModal .pmClose { position: absolute; top: 14px; right: 14px; width: 26px; height: 26px; border-radius: 50%; border: 1px solid #262630; background: transparent; color: #85858f; font-size: 14px; cursor: pointer; line-height: 1; }
+  .projectModal .pmClose:hover { color: #fff; border-color: #454552; }
+  .projectModal button.pmVisit { font: inherit; appearance: none; cursor: pointer; width: 100%; justify-content: center; transition: background 0.15s ease, color 0.15s ease; }
+  .projectModal button.pmVisit.copied { background: var(--c); color: #0c0c11; }
+  .projectModal .coinAddr {
+    display: block; font-family: ui-monospace, monospace; font-size: 12px; line-height: 1.55; color: #d6d6de;
+    background: #08080c; border: 1px solid #262630; border-radius: 8px; padding: 12px 14px; margin: 0 0 14px; word-break: break-all;
+  }
+  .cmBtnRow { display: flex; gap: 8px; }
+  .cmBtnRow .pmVisit { width: auto; flex: 1; }
+  .cmQrWrap { display: flex; justify-content: center; margin: 0 0 14px; }
+  .cmQrWrap canvas { display: block; width: 176px; height: 176px; border-radius: 8px; background: #fff; padding: 12px; }
+  @media (max-width: 700px) {
+    .vC .hero h1 { font-size: 24px; }
+  }
 </style>
 </head>
 <body>
-
-<!-- ========== LANDING ========== -->
-<div id="landing">
-<div class="snap-container">
-
-<!-- HERO -->
-<section class="section hero" id="hero">
-  <a class="hero-about" onclick="showAbout()">ABOUT</a>
-  <div class="hero-wordmark">FYSH</div>
-  <div class="hero-tagline">Tactical intelligence infrastructure.</div>
-  <div class="scroll-cue" aria-hidden="true"></div>
-</section>
-
-<!-- GRAB -->
-<section class="section" id="grab">
-  <div class="product">
-    <div class="product-content">
-      <div class="eyebrow anim" style="color:#4fc3f7">MEDIA</div>
-      <h2 class="product-heading anim">grab</h2>
-      <p class="product-sub anim">"grab" media without the hassle. Uses <a href="https://github.com/imputnet/cobalt" target="_blank" rel="noopener" style="color:#4fc3f7;text-decoration:underline">Cobalt</a> for its bones, preened for Fysh users.</p>
-      <ul class="feature-list anim">
-        <li>&#9670; Download from YouTube, Twitter, Reddit + more</li>
-        <li>&#9670; Clean UI, no ads, no tracking</li>
-        <li>&#9670; Self-hosted on Fysh infrastructure</li>
-      </ul>
-      <a class="cta-link anim" style="color:#4fc3f7" href="https://grab.fysh.site" target="_blank" rel="noopener">OPEN GRAB &rarr;</a>
-    </div>
-    <div class="product-visual">
-      <div class="rr-visual" style="color:#4fc3f7;opacity:1" aria-hidden="true">☕</div>
+<main id="view-c" class="vC">
+  <canvas id="canvasC"></canvas>
+  <div id="fpsC" class="fps-badge"></div>
+  <nav class="topnav">
+    <button id="fishLogoC" class="logo logo-btn" title="?">Fysh</button>
+  </nav>
+  <div class="hero">
+    <h1>Fysh tools.</h1>
+    <p>An ocean of possibilities.</p>
+  </div>
+  <div class="list" id="chipListC">
+    <button type="button" class="chip" data-key="grab" style="--c:#2dd4bf"><span class="dot"></span>Grab</button>
+    <button type="button" class="chip" data-key="ehw" style="--c:#f5a524"><span class="dot"></span>Event Horizon Web</button>
+    <button type="button" class="chip" data-key="rr" style="--c:#ef4444"><span class="dot"></span>Red Rocket</button>
+    <button type="button" class="chip" data-key="wg" style="--c:#8b5cf6"><span class="dot"></span>Warp Gate</button>
+  </div>
+  <div class="list iconsBelow">
+    <a class="chip" href="https://ko-fi.com/fysh_yum" style="--c:#ff5e5b"><span class="chipIcon"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 5.5h9v3.2a3.6 3.6 0 0 1-3.6 3.6H6.1a3.6 3.6 0 0 1-3.6-3.6V5.5z" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M11.5 6.3h1a1.7 1.7 0 0 1 0 3.4h-1" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M2 12.8h10" stroke="currentColor" stroke-width="1.2"/></svg></span>Ko-fi</a>
+    <button type="button" class="chip" id="chipMonero" style="--c:#f26822"><span class="chipIcon"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M8 4.2 4.5 10.8V4.9H3.2v7.9h1.9L8 7.4l2.9 5.4h1.9V4.9h-1.3v5.9L8 4.2z" fill="currentColor" stroke="none"/></svg></span>Monero</button>
+    <button type="button" class="chip" id="chipBitcoin" style="--c:#f7931a"><span class="chipIcon">&#8383;</span>Bitcoin</button>
+    <a class="chip" href="https://github.com/Fysh-ball" style="--c:#e6e6ea"><span class="chipIcon"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></span>GitHub</a>
+  </div>
+  <div class="foot">
+    <span>&copy; 2026 Fysh</span>
+  </div>
+  <div class="projectModal" id="projectModal">
+    <div class="backdrop" id="pmBackdrop"></div>
+    <div class="panel" id="pmPanel">
+      <button type="button" class="pmClose" id="pmClose">&times;</button>
+      <div class="pmHead"><span class="pmDot" id="pmDot"></span><span class="pmName" id="pmName"></span></div>
+      <p class="pmTag" id="pmTag"></p>
+      <p class="pmDesc" id="pmDesc"></p>
+      <a class="pmVisit" id="pmVisit" target="_blank" rel="noopener">Visit site &rarr;</a>
     </div>
   </div>
-</section>
-
-<!-- EHW -->
-<section class="section" id="ehw">
-  <div class="product reverse">
-    <div class="product-content">
-      <div class="eyebrow anim" style="color:#00ff88">INTELLIGENCE</div>
-      <h2 class="product-heading anim">Event Horizon Web <span class="status-badge" style="font-size:11px;letter-spacing:3px;padding:4px 12px;vertical-align:middle;margin-left:8px">BETA</span></h2>
-      <p class="product-sub anim">Real-time geopolitical threat monitoring. Live data from 17 sources. AI-synthesized intelligence briefs. Analyst overrides.</p>
-      <ul class="feature-list anim">
-        <li>&#9670; Live global event map</li>
-        <li>&#9670; AI SITREP + threat scoring</li>
-        <li>&#9670; Doomsday Clock</li>
-        <li>&#9670; Analyst override system</li>
-      </ul>
-      <a class="cta-link anim" href="https://event-horizon.fysh.site" target="_blank" rel="noopener">OPEN INTELLIGENCE PLATFORM &rarr;</a>
-    </div>
-    <div class="product-visual">
-      <div class="watermark-ehw" aria-hidden="true">EHW</div>
-    </div>
-  </div>
-</section>
-
-<!-- RED ROCKET -->
-<section class="section" id="redrocket">
-  <div class="product">
-    <div class="product-content">
-      <div class="eyebrow anim" style="color:#ff3b30">FIELD OPERATIONS</div>
-      <h2 class="product-heading anim">Red Rocket</h2>
-      <p class="product-sub anim">Emergency intelligence for the field. Autonomous SMS routing with false alarm detection. When comms fail, Red Rocket doesn't.</p>
-      <ul class="feature-list anim">
-        <li>&#9670; 8-step false alarm detection</li>
-        <li>&#9670; Lazarus retry -- messages survive downtime</li>
-        <li>&#9670; EHW integration -- field + command in sync</li>
-        <li>&#9670; Offline-capable Android app</li>
-      </ul>
-      <a class="cta-link anim" style="color:#ff3b30" href="https://github.com/Fysh-ball/RedRocket" target="_blank" rel="noopener">VIEW ON GITHUB &rarr;</a>
-    </div>
-    <div class="product-visual">
-      <div class="rr-visual" aria-hidden="true">RR</div>
-    </div>
-  </div>
-</section>
-
-<!-- ANGLER -->
-<section class="section angler-section" id="angler">
-  <div class="angler-inner">
-    <div class="eyebrow anim" style="color:#aaa">AUTONOMOUS AGENT</div>
-    <div class="anim" style="margin-bottom:20px">
-      <span class="fish-icon" aria-hidden="true">&#x3E;&#x3C;(((o&#x3E;</span>
-    </div>
-    <h2 class="angler-heading anim">Angler</h2>
-    <p class="angler-sub anim">Self-directed intelligence agent. Autonomous research, verification, and delivery. Persistent memory. Multi-tier task orchestration.</p>
-    <div class="spec-grid anim">
-      <div>
-        <div class="spec-label">RUNTIME</div>
-        <div class="spec-value">grammY + Ollama</div>
-      </div>
-      <div>
-        <div class="spec-label">MEMORY</div>
-        <div class="spec-value">SQLite with provenance</div>
-      </div>
-      <div>
-        <div class="spec-label">SCHEDULER</div>
-        <div class="spec-value">Autonomous + reactive</div>
-      </div>
-      <div>
-        <div class="spec-label">INFERENCE</div>
-        <div class="spec-value">Local GPU -- qwen3.5:9b</div>
+  <div class="projectModal" id="cryptoModal">
+    <div class="backdrop" id="cmBackdrop"></div>
+    <div class="panel" id="cmPanel">
+      <button type="button" class="pmClose" id="cmClose">&times;</button>
+      <div class="pmHead"><span class="pmDot" id="cmDot"></span><span class="pmName" id="cmName"></span></div>
+      <p class="pmTag">Copy the address below before sending. These transfers can't be reversed.</p>
+      <code class="coinAddr" id="cmAddr"></code>
+      <div class="cmQrWrap" id="cmQrWrap" hidden><canvas id="cmQrCanvas"></canvas></div>
+      <div class="cmBtnRow">
+        <button type="button" class="pmVisit" id="cmCopy">Copy address</button>
+        <button type="button" class="pmVisit" id="cmQrToggle">Show QR</button>
       </div>
     </div>
-    <div class="anim"><span class="status-badge">IN DEVELOPMENT</span></div>
   </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-wordmark">FYSH</div>
-  <div class="footer-products">GRAB &middot; EVENT HORIZON WEB &middot; RED ROCKET &middot; ANGLER</div>
-  <div class="footer-copy">&copy; 2026 Fysh. Built for the field.</div>
-  <a class="footer-about" onclick="showAbout()">ABOUT</a>
-</footer>
-
-</div>
-</div>
-
-<!-- ========== ABOUT ========== -->
-<div id="about-page">
-<div class="about-container">
-
-  <a class="about-back" onclick="showLanding()">&larr; FYSH</a>
-
-  <div class="about-wordmark">FYSH</div>
-  <div class="about-tagline">Tactical intelligence infrastructure.</div>
-  <p class="about-mission">Fysh is a brand that leans into the gritty reality of the world and tries to help people make sense of it. To be afraid is easy, to move forward and help others despite those fears is our mission.</p>
-
-  <div class="about-divider"></div>
-
-  <div class="about-label" style="color:#00ff88">FOUNDER</div>
-  <div class="founder-name">Yeshua</div>
-  <div class="founder-role">Independent Designer</div>
-  <p class="founder-bio">Fysh is a one-person operation. The products are designed and directed by a single human; the engineering is executed in collaboration with AI. Every system, every decision, every aesthetic choice is deliberate.</p>
-
-  <div class="about-divider"></div>
-
-  <div class="about-label" style="color:#00ff88">PRODUCTS</div>
-
-  <div class="about-product">
-    <div class="about-product-name">grab</div>
-    <div class="about-product-desc">"grab" media without the hassle. Powered by <a href="https://github.com/imputnet/cobalt" target="_blank" rel="noopener" style="color:#4fc3f7">Cobalt</a>.</div>
-    <a class="about-product-link" style="color:#4fc3f7" href="https://grab.fysh.site" target="_blank" rel="noopener">grab.fysh.site &rarr;</a>
-  </div>
-
-  <div class="about-product">
-    <div class="about-product-name">Event Horizon Web</div>
-    <div class="about-product-desc">Real-time geopolitical intelligence platform.</div>
-    <a class="about-product-link" href="https://event-horizon.fysh.site" target="_blank" rel="noopener">event-horizon.fysh.site &rarr;</a>
-  </div>
-
-  <div class="about-product">
-    <div class="about-product-name">Red Rocket</div>
-    <div class="about-product-desc">Emergency field communications. Android.</div>
-    <a class="about-product-link" href="https://github.com/Fysh-ball/RedRocket" target="_blank" rel="noopener">github.com/Fysh-ball/RedRocket &rarr;</a>
-  </div>
-
-  <div class="about-product">
-    <div class="about-product-name">Angler</div>
-    <div class="about-product-desc">Autonomous intelligence agent.</div>
-    <span class="about-product-badge">IN DEVELOPMENT</span>
-  </div>
-
-  <div class="about-footer">&copy; 2026 Fysh.</div>
-
-</div>
-</div>
-
+</main>
 <script>
-(function(){
-  // Intersection Observer for landing animations
-  var observer = new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      if(!entry.isIntersecting) return;
-      var children = entry.target.querySelectorAll('.anim');
-      if(children.length===0 && entry.target.classList.contains('anim')){
-        entry.target.classList.add('visible');
-      } else {
-        children.forEach(function(child,i){
-          setTimeout(function(){child.classList.add('visible')},i*100);
-        });
+(function () {
+//---------------------------------------------------------------------
+//
+// QR Code Generator for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//  http://www.opensource.org/licenses/mit-license.php
+//
+// The word 'QR Code' is registered trademark of
+// DENSO WAVE INCORPORATED
+//  http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+
+var qrcode = function() {
+
+  //---------------------------------------------------------------------
+  // qrcode
+  //---------------------------------------------------------------------
+
+  /**
+   * qrcode
+   * @param typeNumber 1 to 40
+   * @param errorCorrectionLevel 'L','M','Q','H'
+   */
+  var qrcode = function(typeNumber, errorCorrectionLevel) {
+
+    var PAD0 = 0xEC;
+    var PAD1 = 0x11;
+
+    var _typeNumber = typeNumber;
+    var _errorCorrectionLevel = QRErrorCorrectionLevel[errorCorrectionLevel];
+    var _modules = null;
+    var _moduleCount = 0;
+    var _dataCache = null;
+    var _dataList = [];
+
+    var _this = {};
+
+    var makeImpl = function(test, maskPattern) {
+
+      _moduleCount = _typeNumber * 4 + 17;
+      _modules = function(moduleCount) {
+        var modules = new Array(moduleCount);
+        for (var row = 0; row < moduleCount; row += 1) {
+          modules[row] = new Array(moduleCount);
+          for (var col = 0; col < moduleCount; col += 1) {
+            modules[row][col] = null;
+          }
+        }
+        return modules;
+      }(_moduleCount);
+
+      setupPositionProbePattern(0, 0);
+      setupPositionProbePattern(_moduleCount - 7, 0);
+      setupPositionProbePattern(0, _moduleCount - 7);
+      setupPositionAdjustPattern();
+      setupTimingPattern();
+      setupTypeInfo(test, maskPattern);
+
+      if (_typeNumber >= 7) {
+        setupTypeNumber(test);
       }
-      observer.unobserve(entry.target);
-    });
-  },{threshold:0.2});
 
-  function initObserver(){
-    document.querySelectorAll('#landing .section').forEach(function(s){
-      observer.observe(s);
-    });
+      if (_dataCache == null) {
+        _dataCache = createData(_typeNumber, _errorCorrectionLevel, _dataList);
+      }
+
+      mapData(_dataCache, maskPattern);
+    };
+
+    var setupPositionProbePattern = function(row, col) {
+
+      for (var r = -1; r <= 7; r += 1) {
+
+        if (row + r <= -1 || _moduleCount <= row + r) continue;
+
+        for (var c = -1; c <= 7; c += 1) {
+
+          if (col + c <= -1 || _moduleCount <= col + c) continue;
+
+          if ( (0 <= r && r <= 6 && (c == 0 || c == 6) )
+              || (0 <= c && c <= 6 && (r == 0 || r == 6) )
+              || (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+            _modules[row + r][col + c] = true;
+          } else {
+            _modules[row + r][col + c] = false;
+          }
+        }
+      }
+    };
+
+    var getBestMaskPattern = function() {
+
+      var minLostPoint = 0;
+      var pattern = 0;
+
+      for (var i = 0; i < 8; i += 1) {
+
+        makeImpl(true, i);
+
+        var lostPoint = QRUtil.getLostPoint(_this);
+
+        if (i == 0 || minLostPoint > lostPoint) {
+          minLostPoint = lostPoint;
+          pattern = i;
+        }
+      }
+
+      return pattern;
+    };
+
+    var setupTimingPattern = function() {
+
+      for (var r = 8; r < _moduleCount - 8; r += 1) {
+        if (_modules[r][6] != null) {
+          continue;
+        }
+        _modules[r][6] = (r % 2 == 0);
+      }
+
+      for (var c = 8; c < _moduleCount - 8; c += 1) {
+        if (_modules[6][c] != null) {
+          continue;
+        }
+        _modules[6][c] = (c % 2 == 0);
+      }
+    };
+
+    var setupPositionAdjustPattern = function() {
+
+      var pos = QRUtil.getPatternPosition(_typeNumber);
+
+      for (var i = 0; i < pos.length; i += 1) {
+
+        for (var j = 0; j < pos.length; j += 1) {
+
+          var row = pos[i];
+          var col = pos[j];
+
+          if (_modules[row][col] != null) {
+            continue;
+          }
+
+          for (var r = -2; r <= 2; r += 1) {
+
+            for (var c = -2; c <= 2; c += 1) {
+
+              if (r == -2 || r == 2 || c == -2 || c == 2
+                  || (r == 0 && c == 0) ) {
+                _modules[row + r][col + c] = true;
+              } else {
+                _modules[row + r][col + c] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    var setupTypeNumber = function(test) {
+
+      var bits = QRUtil.getBCHTypeNumber(_typeNumber);
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[Math.floor(i / 3)][i % 3 + _moduleCount - 8 - 3] = mod;
+      }
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[i % 3 + _moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
+      }
+    };
+
+    var setupTypeInfo = function(test, maskPattern) {
+
+      var data = (_errorCorrectionLevel << 3) | maskPattern;
+      var bits = QRUtil.getBCHTypeInfo(data);
+
+      // vertical
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 6) {
+          _modules[i][8] = mod;
+        } else if (i < 8) {
+          _modules[i + 1][8] = mod;
+        } else {
+          _modules[_moduleCount - 15 + i][8] = mod;
+        }
+      }
+
+      // horizontal
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 8) {
+          _modules[8][_moduleCount - i - 1] = mod;
+        } else if (i < 9) {
+          _modules[8][15 - i - 1 + 1] = mod;
+        } else {
+          _modules[8][15 - i - 1] = mod;
+        }
+      }
+
+      // fixed module
+      _modules[_moduleCount - 8][8] = (!test);
+    };
+
+    var mapData = function(data, maskPattern) {
+
+      var inc = -1;
+      var row = _moduleCount - 1;
+      var bitIndex = 7;
+      var byteIndex = 0;
+      var maskFunc = QRUtil.getMaskFunction(maskPattern);
+
+      for (var col = _moduleCount - 1; col > 0; col -= 2) {
+
+        if (col == 6) col -= 1;
+
+        while (true) {
+
+          for (var c = 0; c < 2; c += 1) {
+
+            if (_modules[row][col - c] == null) {
+
+              var dark = false;
+
+              if (byteIndex < data.length) {
+                dark = ( ( (data[byteIndex] >>> bitIndex) & 1) == 1);
+              }
+
+              var mask = maskFunc(row, col - c);
+
+              if (mask) {
+                dark = !dark;
+              }
+
+              _modules[row][col - c] = dark;
+              bitIndex -= 1;
+
+              if (bitIndex == -1) {
+                byteIndex += 1;
+                bitIndex = 7;
+              }
+            }
+          }
+
+          row += inc;
+
+          if (row < 0 || _moduleCount <= row) {
+            row -= inc;
+            inc = -inc;
+            break;
+          }
+        }
+      }
+    };
+
+    var createBytes = function(buffer, rsBlocks) {
+
+      var offset = 0;
+
+      var maxDcCount = 0;
+      var maxEcCount = 0;
+
+      var dcdata = new Array(rsBlocks.length);
+      var ecdata = new Array(rsBlocks.length);
+
+      for (var r = 0; r < rsBlocks.length; r += 1) {
+
+        var dcCount = rsBlocks[r].dataCount;
+        var ecCount = rsBlocks[r].totalCount - dcCount;
+
+        maxDcCount = Math.max(maxDcCount, dcCount);
+        maxEcCount = Math.max(maxEcCount, ecCount);
+
+        dcdata[r] = new Array(dcCount);
+
+        for (var i = 0; i < dcdata[r].length; i += 1) {
+          dcdata[r][i] = 0xff & buffer.getBuffer()[i + offset];
+        }
+        offset += dcCount;
+
+        var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+        var rawPoly = qrPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+        var modPoly = rawPoly.mod(rsPoly);
+        ecdata[r] = new Array(rsPoly.getLength() - 1);
+        for (var i = 0; i < ecdata[r].length; i += 1) {
+          var modIndex = i + modPoly.getLength() - ecdata[r].length;
+          ecdata[r][i] = (modIndex >= 0)? modPoly.getAt(modIndex) : 0;
+        }
+      }
+
+      var totalCodeCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalCodeCount += rsBlocks[i].totalCount;
+      }
+
+      var data = new Array(totalCodeCount);
+      var index = 0;
+
+      for (var i = 0; i < maxDcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < dcdata[r].length) {
+            data[index] = dcdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      for (var i = 0; i < maxEcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < ecdata[r].length) {
+            data[index] = ecdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      return data;
+    };
+
+    var createData = function(typeNumber, errorCorrectionLevel, dataList) {
+
+      var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectionLevel);
+
+      var buffer = qrBitBuffer();
+
+      for (var i = 0; i < dataList.length; i += 1) {
+        var data = dataList[i];
+        buffer.put(data.getMode(), 4);
+        buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+        data.write(buffer);
+      }
+
+      // calc num max data.
+      var totalDataCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalDataCount += rsBlocks[i].dataCount;
+      }
+
+      if (buffer.getLengthInBits() > totalDataCount * 8) {
+        throw 'code length overflow. ('
+          + buffer.getLengthInBits()
+          + '>'
+          + totalDataCount * 8
+          + ')';
+      }
+
+      // end code
+      if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+        buffer.put(0, 4);
+      }
+
+      // padding
+      while (buffer.getLengthInBits() % 8 != 0) {
+        buffer.putBit(false);
+      }
+
+      // padding
+      while (true) {
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD0, 8);
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD1, 8);
+      }
+
+      return createBytes(buffer, rsBlocks);
+    };
+
+    _this.addData = function(data, mode) {
+
+      mode = mode || 'Byte';
+
+      var newData = null;
+
+      switch(mode) {
+      case 'Numeric' :
+        newData = qrNumber(data);
+        break;
+      case 'Alphanumeric' :
+        newData = qrAlphaNum(data);
+        break;
+      case 'Byte' :
+        newData = qr8BitByte(data);
+        break;
+      case 'Kanji' :
+        newData = qrKanji(data);
+        break;
+      default :
+        throw 'mode:' + mode;
+      }
+
+      _dataList.push(newData);
+      _dataCache = null;
+    };
+
+    _this.isDark = function(row, col) {
+      if (row < 0 || _moduleCount <= row || col < 0 || _moduleCount <= col) {
+        throw row + ',' + col;
+      }
+      return _modules[row][col];
+    };
+
+    _this.getModuleCount = function() {
+      return _moduleCount;
+    };
+
+    _this.make = function() {
+      if (_typeNumber < 1) {
+        var typeNumber = 1;
+
+        for (; typeNumber < 40; typeNumber++) {
+          var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, _errorCorrectionLevel);
+          var buffer = qrBitBuffer();
+
+          for (var i = 0; i < _dataList.length; i++) {
+            var data = _dataList[i];
+            buffer.put(data.getMode(), 4);
+            buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+            data.write(buffer);
+          }
+
+          var totalDataCount = 0;
+          for (var i = 0; i < rsBlocks.length; i++) {
+            totalDataCount += rsBlocks[i].dataCount;
+          }
+
+          if (buffer.getLengthInBits() <= totalDataCount * 8) {
+            break;
+          }
+        }
+
+        _typeNumber = typeNumber;
+      }
+
+      makeImpl(false, getBestMaskPattern() );
+    };
+
+    _this.createTableTag = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var qrHtml = '';
+
+      qrHtml += '<table style="';
+      qrHtml += ' border-width: 0px; border-style: none;';
+      qrHtml += ' border-collapse: collapse;';
+      qrHtml += ' padding: 0px; margin: ' + margin + 'px;';
+      qrHtml += '">';
+      qrHtml += '<tbody>';
+
+      for (var r = 0; r < _this.getModuleCount(); r += 1) {
+
+        qrHtml += '<tr>';
+
+        for (var c = 0; c < _this.getModuleCount(); c += 1) {
+          qrHtml += '<td style="';
+          qrHtml += ' border-width: 0px; border-style: none;';
+          qrHtml += ' border-collapse: collapse;';
+          qrHtml += ' padding: 0px; margin: 0px;';
+          qrHtml += ' width: ' + cellSize + 'px;';
+          qrHtml += ' height: ' + cellSize + 'px;';
+          qrHtml += ' background-color: ';
+          qrHtml += _this.isDark(r, c)? '#000000' : '#ffffff';
+          qrHtml += ';';
+          qrHtml += '"/>';
+        }
+
+        qrHtml += '</tr>';
+      }
+
+      qrHtml += '</tbody>';
+      qrHtml += '</table>';
+
+      return qrHtml;
+    };
+
+    _this.createSvgTag = function(cellSize, margin, alt, title) {
+
+      var opts = {};
+      if (typeof arguments[0] == 'object') {
+        // Called by options.
+        opts = arguments[0];
+        // overwrite cellSize and margin.
+        cellSize = opts.cellSize;
+        margin = opts.margin;
+        alt = opts.alt;
+        title = opts.title;
+      }
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      // Compose alt property surrogate
+      alt = (typeof alt === 'string') ? {text: alt} : alt || {};
+      alt.text = alt.text || null;
+      alt.id = (alt.text) ? alt.id || 'qrcode-description' : null;
+
+      // Compose title property surrogate
+      title = (typeof title === 'string') ? {text: title} : title || {};
+      title.text = title.text || null;
+      title.id = (title.text) ? title.id || 'qrcode-title' : null;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var c, mc, r, mr, qrSvg='', rect;
+
+      rect = 'l' + cellSize + ',0 0,' + cellSize +
+        ' -' + cellSize + ',0 0,-' + cellSize + 'z ';
+
+      qrSvg += '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"';
+      qrSvg += !opts.scalable ? ' width="' + size + 'px" height="' + size + 'px"' : '';
+      qrSvg += ' viewBox="0 0 ' + size + ' ' + size + '" ';
+      qrSvg += ' preserveAspectRatio="xMinYMin meet"';
+      qrSvg += (title.text || alt.text) ? ' role="img" aria-labelledby="' +
+          escapeXml([title.id, alt.id].join(' ').trim() ) + '"' : '';
+      qrSvg += '>';
+      qrSvg += (title.text) ? '<title id="' + escapeXml(title.id) + '">' +
+          escapeXml(title.text) + '</title>' : '';
+      qrSvg += (alt.text) ? '<description id="' + escapeXml(alt.id) + '">' +
+          escapeXml(alt.text) + '</description>' : '';
+      qrSvg += '<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>';
+      qrSvg += '<path d="';
+
+      for (r = 0; r < _this.getModuleCount(); r += 1) {
+        mr = r * cellSize + margin;
+        for (c = 0; c < _this.getModuleCount(); c += 1) {
+          if (_this.isDark(r, c) ) {
+            mc = c*cellSize+margin;
+            qrSvg += 'M' + mc + ',' + mr + rect;
+          }
+        }
+      }
+
+      qrSvg += '" stroke="transparent" fill="black"/>';
+      qrSvg += '</svg>';
+
+      return qrSvg;
+    };
+
+    _this.createDataURL = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      return createDataURL(size, size, function(x, y) {
+        if (min <= x && x < max && min <= y && y < max) {
+          var c = Math.floor( (x - min) / cellSize);
+          var r = Math.floor( (y - min) / cellSize);
+          return _this.isDark(r, c)? 0 : 1;
+        } else {
+          return 1;
+        }
+      } );
+    };
+
+    _this.createImgTag = function(cellSize, margin, alt) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+
+      var img = '';
+      img += '<img';
+      img += '\u0020src="';
+      img += _this.createDataURL(cellSize, margin);
+      img += '"';
+      img += '\u0020width="';
+      img += size;
+      img += '"';
+      img += '\u0020height="';
+      img += size;
+      img += '"';
+      if (alt) {
+        img += '\u0020alt="';
+        img += escapeXml(alt);
+        img += '"';
+      }
+      img += '/>';
+
+      return img;
+    };
+
+    var escapeXml = function(s) {
+      var escaped = '';
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charAt(i);
+        switch(c) {
+        case '<': escaped += '&lt;'; break;
+        case '>': escaped += '&gt;'; break;
+        case '&': escaped += '&amp;'; break;
+        case '"': escaped += '&quot;'; break;
+        default : escaped += c; break;
+        }
+      }
+      return escaped;
+    };
+
+    var _createHalfASCII = function(margin) {
+      var cellSize = 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r1, r2, p;
+
+      var blocks = {
+        '██': '█',
+        '█ ': '▀',
+        ' █': '▄',
+        '  ': ' '
+      };
+
+      var blocksLastLineNoMargin = {
+        '██': '▀',
+        '█ ': '▀',
+        ' █': ' ',
+        '  ': ' '
+      };
+
+      var ascii = '';
+      for (y = 0; y < size; y += 2) {
+        r1 = Math.floor((y - min) / cellSize);
+        r2 = Math.floor((y + 1 - min) / cellSize);
+        for (x = 0; x < size; x += 1) {
+          p = '█';
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r1, Math.floor((x - min) / cellSize))) {
+            p = ' ';
+          }
+
+          if (min <= x && x < max && min <= y+1 && y+1 < max && _this.isDark(r2, Math.floor((x - min) / cellSize))) {
+            p += ' ';
+          }
+          else {
+            p += '█';
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          ascii += (margin < 1 && y+1 >= max) ? blocksLastLineNoMargin[p] : blocks[p];
+        }
+
+        ascii += '\n';
+      }
+
+      if (size % 2 && margin > 0) {
+        return ascii.substring(0, ascii.length - size - 1) + Array(size+1).join('▀');
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.createASCII = function(cellSize, margin) {
+      cellSize = cellSize || 1;
+
+      if (cellSize < 2) {
+        return _createHalfASCII(margin);
+      }
+
+      cellSize -= 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r, p;
+
+      var white = Array(cellSize+1).join('██');
+      var black = Array(cellSize+1).join('  ');
+
+      var ascii = '';
+      var line = '';
+      for (y = 0; y < size; y += 1) {
+        r = Math.floor( (y - min) / cellSize);
+        line = '';
+        for (x = 0; x < size; x += 1) {
+          p = 1;
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r, Math.floor((x - min) / cellSize))) {
+            p = 0;
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          line += p ? white : black;
+        }
+
+        for (r = 0; r < cellSize; r += 1) {
+          ascii += line + '\n';
+        }
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.renderTo2dContext = function(context, cellSize) {
+      cellSize = cellSize || 2;
+      var length = _this.getModuleCount();
+      for (var row = 0; row < length; row++) {
+        for (var col = 0; col < length; col++) {
+          context.fillStyle = _this.isDark(row, col) ? 'black' : 'white';
+          context.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrcode.stringToBytes
+  //---------------------------------------------------------------------
+
+  qrcode.stringToBytesFuncs = {
+    'default' : function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        bytes.push(c & 0xff);
+      }
+      return bytes;
+    }
+  };
+
+  qrcode.stringToBytes = qrcode.stringToBytesFuncs['default'];
+
+  //---------------------------------------------------------------------
+  // qrcode.createStringToBytes
+  //---------------------------------------------------------------------
+
+  /**
+   * @param unicodeData base64 string of byte array.
+   * [16bit Unicode],[16bit Bytes], ...
+   * @param numChars
+   */
+  qrcode.createStringToBytes = function(unicodeData, numChars) {
+
+    // create conversion map.
+
+    var unicodeMap = function() {
+
+      var bin = base64DecodeInputStream(unicodeData);
+      var read = function() {
+        var b = bin.read();
+        if (b == -1) throw 'eof';
+        return b;
+      };
+
+      var count = 0;
+      var unicodeMap = {};
+      while (true) {
+        var b0 = bin.read();
+        if (b0 == -1) break;
+        var b1 = read();
+        var b2 = read();
+        var b3 = read();
+        var k = String.fromCharCode( (b0 << 8) | b1);
+        var v = (b2 << 8) | b3;
+        unicodeMap[k] = v;
+        count += 1;
+      }
+      if (count != numChars) {
+        throw count + ' != ' + numChars;
+      }
+
+      return unicodeMap;
+    }();
+
+    var unknownChar = '?'.charCodeAt(0);
+
+    return function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        if (c < 128) {
+          bytes.push(c);
+        } else {
+          var b = unicodeMap[s.charAt(i)];
+          if (typeof b == 'number') {
+            if ( (b & 0xff) == b) {
+              // 1byte
+              bytes.push(b);
+            } else {
+              // 2bytes
+              bytes.push(b >>> 8);
+              bytes.push(b & 0xff);
+            }
+          } else {
+            bytes.push(unknownChar);
+          }
+        }
+      }
+      return bytes;
+    };
+  };
+
+  //---------------------------------------------------------------------
+  // QRMode
+  //---------------------------------------------------------------------
+
+  var QRMode = {
+    MODE_NUMBER :    1 << 0,
+    MODE_ALPHA_NUM : 1 << 1,
+    MODE_8BIT_BYTE : 1 << 2,
+    MODE_KANJI :     1 << 3
+  };
+
+  //---------------------------------------------------------------------
+  // QRErrorCorrectionLevel
+  //---------------------------------------------------------------------
+
+  var QRErrorCorrectionLevel = {
+    L : 1,
+    M : 0,
+    Q : 3,
+    H : 2
+  };
+
+  //---------------------------------------------------------------------
+  // QRMaskPattern
+  //---------------------------------------------------------------------
+
+  var QRMaskPattern = {
+    PATTERN000 : 0,
+    PATTERN001 : 1,
+    PATTERN010 : 2,
+    PATTERN011 : 3,
+    PATTERN100 : 4,
+    PATTERN101 : 5,
+    PATTERN110 : 6,
+    PATTERN111 : 7
+  };
+
+  //---------------------------------------------------------------------
+  // QRUtil
+  //---------------------------------------------------------------------
+
+  var QRUtil = function() {
+
+    var PATTERN_POSITION_TABLE = [
+      [],
+      [6, 18],
+      [6, 22],
+      [6, 26],
+      [6, 30],
+      [6, 34],
+      [6, 22, 38],
+      [6, 24, 42],
+      [6, 26, 46],
+      [6, 28, 50],
+      [6, 30, 54],
+      [6, 32, 58],
+      [6, 34, 62],
+      [6, 26, 46, 66],
+      [6, 26, 48, 70],
+      [6, 26, 50, 74],
+      [6, 30, 54, 78],
+      [6, 30, 56, 82],
+      [6, 30, 58, 86],
+      [6, 34, 62, 90],
+      [6, 28, 50, 72, 94],
+      [6, 26, 50, 74, 98],
+      [6, 30, 54, 78, 102],
+      [6, 28, 54, 80, 106],
+      [6, 32, 58, 84, 110],
+      [6, 30, 58, 86, 114],
+      [6, 34, 62, 90, 118],
+      [6, 26, 50, 74, 98, 122],
+      [6, 30, 54, 78, 102, 126],
+      [6, 26, 52, 78, 104, 130],
+      [6, 30, 56, 82, 108, 134],
+      [6, 34, 60, 86, 112, 138],
+      [6, 30, 58, 86, 114, 142],
+      [6, 34, 62, 90, 118, 146],
+      [6, 30, 54, 78, 102, 126, 150],
+      [6, 24, 50, 76, 102, 128, 154],
+      [6, 28, 54, 80, 106, 132, 158],
+      [6, 32, 58, 84, 110, 136, 162],
+      [6, 26, 54, 82, 110, 138, 166],
+      [6, 30, 58, 86, 114, 142, 170]
+    ];
+    var G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
+    var G18 = (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0);
+    var G15_MASK = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1);
+
+    var _this = {};
+
+    var getBCHDigit = function(data) {
+      var digit = 0;
+      while (data != 0) {
+        digit += 1;
+        data >>>= 1;
+      }
+      return digit;
+    };
+
+    _this.getBCHTypeInfo = function(data) {
+      var d = data << 10;
+      while (getBCHDigit(d) - getBCHDigit(G15) >= 0) {
+        d ^= (G15 << (getBCHDigit(d) - getBCHDigit(G15) ) );
+      }
+      return ( (data << 10) | d) ^ G15_MASK;
+    };
+
+    _this.getBCHTypeNumber = function(data) {
+      var d = data << 12;
+      while (getBCHDigit(d) - getBCHDigit(G18) >= 0) {
+        d ^= (G18 << (getBCHDigit(d) - getBCHDigit(G18) ) );
+      }
+      return (data << 12) | d;
+    };
+
+    _this.getPatternPosition = function(typeNumber) {
+      return PATTERN_POSITION_TABLE[typeNumber - 1];
+    };
+
+    _this.getMaskFunction = function(maskPattern) {
+
+      switch (maskPattern) {
+
+      case QRMaskPattern.PATTERN000 :
+        return function(i, j) { return (i + j) % 2 == 0; };
+      case QRMaskPattern.PATTERN001 :
+        return function(i, j) { return i % 2 == 0; };
+      case QRMaskPattern.PATTERN010 :
+        return function(i, j) { return j % 3 == 0; };
+      case QRMaskPattern.PATTERN011 :
+        return function(i, j) { return (i + j) % 3 == 0; };
+      case QRMaskPattern.PATTERN100 :
+        return function(i, j) { return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 == 0; };
+      case QRMaskPattern.PATTERN101 :
+        return function(i, j) { return (i * j) % 2 + (i * j) % 3 == 0; };
+      case QRMaskPattern.PATTERN110 :
+        return function(i, j) { return ( (i * j) % 2 + (i * j) % 3) % 2 == 0; };
+      case QRMaskPattern.PATTERN111 :
+        return function(i, j) { return ( (i * j) % 3 + (i + j) % 2) % 2 == 0; };
+
+      default :
+        throw 'bad maskPattern:' + maskPattern;
+      }
+    };
+
+    _this.getErrorCorrectPolynomial = function(errorCorrectLength) {
+      var a = qrPolynomial([1], 0);
+      for (var i = 0; i < errorCorrectLength; i += 1) {
+        a = a.multiply(qrPolynomial([1, QRMath.gexp(i)], 0) );
+      }
+      return a;
+    };
+
+    _this.getLengthInBits = function(mode, type) {
+
+      if (1 <= type && type < 10) {
+
+        // 1 - 9
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 10;
+        case QRMode.MODE_ALPHA_NUM : return 9;
+        case QRMode.MODE_8BIT_BYTE : return 8;
+        case QRMode.MODE_KANJI     : return 8;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 27) {
+
+        // 10 - 26
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 12;
+        case QRMode.MODE_ALPHA_NUM : return 11;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 10;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 41) {
+
+        // 27 - 40
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 14;
+        case QRMode.MODE_ALPHA_NUM : return 13;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 12;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else {
+        throw 'type:' + type;
+      }
+    };
+
+    _this.getLostPoint = function(qrcode) {
+
+      var moduleCount = qrcode.getModuleCount();
+
+      var lostPoint = 0;
+
+      // LEVEL1
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount; col += 1) {
+
+          var sameCount = 0;
+          var dark = qrcode.isDark(row, col);
+
+          for (var r = -1; r <= 1; r += 1) {
+
+            if (row + r < 0 || moduleCount <= row + r) {
+              continue;
+            }
+
+            for (var c = -1; c <= 1; c += 1) {
+
+              if (col + c < 0 || moduleCount <= col + c) {
+                continue;
+              }
+
+              if (r == 0 && c == 0) {
+                continue;
+              }
+
+              if (dark == qrcode.isDark(row + r, col + c) ) {
+                sameCount += 1;
+              }
+            }
+          }
+
+          if (sameCount > 5) {
+            lostPoint += (3 + sameCount - 5);
+          }
+        }
+      };
+
+      // LEVEL2
+
+      for (var row = 0; row < moduleCount - 1; row += 1) {
+        for (var col = 0; col < moduleCount - 1; col += 1) {
+          var count = 0;
+          if (qrcode.isDark(row, col) ) count += 1;
+          if (qrcode.isDark(row + 1, col) ) count += 1;
+          if (qrcode.isDark(row, col + 1) ) count += 1;
+          if (qrcode.isDark(row + 1, col + 1) ) count += 1;
+          if (count == 0 || count == 4) {
+            lostPoint += 3;
+          }
+        }
+      }
+
+      // LEVEL3
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount - 6; col += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row, col + 1)
+              &&  qrcode.isDark(row, col + 2)
+              &&  qrcode.isDark(row, col + 3)
+              &&  qrcode.isDark(row, col + 4)
+              && !qrcode.isDark(row, col + 5)
+              &&  qrcode.isDark(row, col + 6) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount - 6; row += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row + 1, col)
+              &&  qrcode.isDark(row + 2, col)
+              &&  qrcode.isDark(row + 3, col)
+              &&  qrcode.isDark(row + 4, col)
+              && !qrcode.isDark(row + 5, col)
+              &&  qrcode.isDark(row + 6, col) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      // LEVEL4
+
+      var darkCount = 0;
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount; row += 1) {
+          if (qrcode.isDark(row, col) ) {
+            darkCount += 1;
+          }
+        }
+      }
+
+      var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+      lostPoint += ratio * 10;
+
+      return lostPoint;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // QRMath
+  //---------------------------------------------------------------------
+
+  var QRMath = function() {
+
+    var EXP_TABLE = new Array(256);
+    var LOG_TABLE = new Array(256);
+
+    // initialize tables
+    for (var i = 0; i < 8; i += 1) {
+      EXP_TABLE[i] = 1 << i;
+    }
+    for (var i = 8; i < 256; i += 1) {
+      EXP_TABLE[i] = EXP_TABLE[i - 4]
+        ^ EXP_TABLE[i - 5]
+        ^ EXP_TABLE[i - 6]
+        ^ EXP_TABLE[i - 8];
+    }
+    for (var i = 0; i < 255; i += 1) {
+      LOG_TABLE[EXP_TABLE[i] ] = i;
+    }
+
+    var _this = {};
+
+    _this.glog = function(n) {
+
+      if (n < 1) {
+        throw 'glog(' + n + ')';
+      }
+
+      return LOG_TABLE[n];
+    };
+
+    _this.gexp = function(n) {
+
+      while (n < 0) {
+        n += 255;
+      }
+
+      while (n >= 256) {
+        n -= 255;
+      }
+
+      return EXP_TABLE[n];
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrPolynomial
+  //---------------------------------------------------------------------
+
+  function qrPolynomial(num, shift) {
+
+    if (typeof num.length == 'undefined') {
+      throw num.length + '/' + shift;
+    }
+
+    var _num = function() {
+      var offset = 0;
+      while (offset < num.length && num[offset] == 0) {
+        offset += 1;
+      }
+      var _num = new Array(num.length - offset + shift);
+      for (var i = 0; i < num.length - offset; i += 1) {
+        _num[i] = num[i + offset];
+      }
+      return _num;
+    }();
+
+    var _this = {};
+
+    _this.getAt = function(index) {
+      return _num[index];
+    };
+
+    _this.getLength = function() {
+      return _num.length;
+    };
+
+    _this.multiply = function(e) {
+
+      var num = new Array(_this.getLength() + e.getLength() - 1);
+
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        for (var j = 0; j < e.getLength(); j += 1) {
+          num[i + j] ^= QRMath.gexp(QRMath.glog(_this.getAt(i) ) + QRMath.glog(e.getAt(j) ) );
+        }
+      }
+
+      return qrPolynomial(num, 0);
+    };
+
+    _this.mod = function(e) {
+
+      if (_this.getLength() - e.getLength() < 0) {
+        return _this;
+      }
+
+      var ratio = QRMath.glog(_this.getAt(0) ) - QRMath.glog(e.getAt(0) );
+
+      var num = new Array(_this.getLength() );
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        num[i] = _this.getAt(i);
+      }
+
+      for (var i = 0; i < e.getLength(); i += 1) {
+        num[i] ^= QRMath.gexp(QRMath.glog(e.getAt(i) ) + ratio);
+      }
+
+      // recursive call
+      return qrPolynomial(num, 0).mod(e);
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // QRRSBlock
+  //---------------------------------------------------------------------
+
+  var QRRSBlock = function() {
+
+    var RS_BLOCK_TABLE = [
+
+      // L
+      // M
+      // Q
+      // H
+
+      // 1
+      [1, 26, 19],
+      [1, 26, 16],
+      [1, 26, 13],
+      [1, 26, 9],
+
+      // 2
+      [1, 44, 34],
+      [1, 44, 28],
+      [1, 44, 22],
+      [1, 44, 16],
+
+      // 3
+      [1, 70, 55],
+      [1, 70, 44],
+      [2, 35, 17],
+      [2, 35, 13],
+
+      // 4
+      [1, 100, 80],
+      [2, 50, 32],
+      [2, 50, 24],
+      [4, 25, 9],
+
+      // 5
+      [1, 134, 108],
+      [2, 67, 43],
+      [2, 33, 15, 2, 34, 16],
+      [2, 33, 11, 2, 34, 12],
+
+      // 6
+      [2, 86, 68],
+      [4, 43, 27],
+      [4, 43, 19],
+      [4, 43, 15],
+
+      // 7
+      [2, 98, 78],
+      [4, 49, 31],
+      [2, 32, 14, 4, 33, 15],
+      [4, 39, 13, 1, 40, 14],
+
+      // 8
+      [2, 121, 97],
+      [2, 60, 38, 2, 61, 39],
+      [4, 40, 18, 2, 41, 19],
+      [4, 40, 14, 2, 41, 15],
+
+      // 9
+      [2, 146, 116],
+      [3, 58, 36, 2, 59, 37],
+      [4, 36, 16, 4, 37, 17],
+      [4, 36, 12, 4, 37, 13],
+
+      // 10
+      [2, 86, 68, 2, 87, 69],
+      [4, 69, 43, 1, 70, 44],
+      [6, 43, 19, 2, 44, 20],
+      [6, 43, 15, 2, 44, 16],
+
+      // 11
+      [4, 101, 81],
+      [1, 80, 50, 4, 81, 51],
+      [4, 50, 22, 4, 51, 23],
+      [3, 36, 12, 8, 37, 13],
+
+      // 12
+      [2, 116, 92, 2, 117, 93],
+      [6, 58, 36, 2, 59, 37],
+      [4, 46, 20, 6, 47, 21],
+      [7, 42, 14, 4, 43, 15],
+
+      // 13
+      [4, 133, 107],
+      [8, 59, 37, 1, 60, 38],
+      [8, 44, 20, 4, 45, 21],
+      [12, 33, 11, 4, 34, 12],
+
+      // 14
+      [3, 145, 115, 1, 146, 116],
+      [4, 64, 40, 5, 65, 41],
+      [11, 36, 16, 5, 37, 17],
+      [11, 36, 12, 5, 37, 13],
+
+      // 15
+      [5, 109, 87, 1, 110, 88],
+      [5, 65, 41, 5, 66, 42],
+      [5, 54, 24, 7, 55, 25],
+      [11, 36, 12, 7, 37, 13],
+
+      // 16
+      [5, 122, 98, 1, 123, 99],
+      [7, 73, 45, 3, 74, 46],
+      [15, 43, 19, 2, 44, 20],
+      [3, 45, 15, 13, 46, 16],
+
+      // 17
+      [1, 135, 107, 5, 136, 108],
+      [10, 74, 46, 1, 75, 47],
+      [1, 50, 22, 15, 51, 23],
+      [2, 42, 14, 17, 43, 15],
+
+      // 18
+      [5, 150, 120, 1, 151, 121],
+      [9, 69, 43, 4, 70, 44],
+      [17, 50, 22, 1, 51, 23],
+      [2, 42, 14, 19, 43, 15],
+
+      // 19
+      [3, 141, 113, 4, 142, 114],
+      [3, 70, 44, 11, 71, 45],
+      [17, 47, 21, 4, 48, 22],
+      [9, 39, 13, 16, 40, 14],
+
+      // 20
+      [3, 135, 107, 5, 136, 108],
+      [3, 67, 41, 13, 68, 42],
+      [15, 54, 24, 5, 55, 25],
+      [15, 43, 15, 10, 44, 16],
+
+      // 21
+      [4, 144, 116, 4, 145, 117],
+      [17, 68, 42],
+      [17, 50, 22, 6, 51, 23],
+      [19, 46, 16, 6, 47, 17],
+
+      // 22
+      [2, 139, 111, 7, 140, 112],
+      [17, 74, 46],
+      [7, 54, 24, 16, 55, 25],
+      [34, 37, 13],
+
+      // 23
+      [4, 151, 121, 5, 152, 122],
+      [4, 75, 47, 14, 76, 48],
+      [11, 54, 24, 14, 55, 25],
+      [16, 45, 15, 14, 46, 16],
+
+      // 24
+      [6, 147, 117, 4, 148, 118],
+      [6, 73, 45, 14, 74, 46],
+      [11, 54, 24, 16, 55, 25],
+      [30, 46, 16, 2, 47, 17],
+
+      // 25
+      [8, 132, 106, 4, 133, 107],
+      [8, 75, 47, 13, 76, 48],
+      [7, 54, 24, 22, 55, 25],
+      [22, 45, 15, 13, 46, 16],
+
+      // 26
+      [10, 142, 114, 2, 143, 115],
+      [19, 74, 46, 4, 75, 47],
+      [28, 50, 22, 6, 51, 23],
+      [33, 46, 16, 4, 47, 17],
+
+      // 27
+      [8, 152, 122, 4, 153, 123],
+      [22, 73, 45, 3, 74, 46],
+      [8, 53, 23, 26, 54, 24],
+      [12, 45, 15, 28, 46, 16],
+
+      // 28
+      [3, 147, 117, 10, 148, 118],
+      [3, 73, 45, 23, 74, 46],
+      [4, 54, 24, 31, 55, 25],
+      [11, 45, 15, 31, 46, 16],
+
+      // 29
+      [7, 146, 116, 7, 147, 117],
+      [21, 73, 45, 7, 74, 46],
+      [1, 53, 23, 37, 54, 24],
+      [19, 45, 15, 26, 46, 16],
+
+      // 30
+      [5, 145, 115, 10, 146, 116],
+      [19, 75, 47, 10, 76, 48],
+      [15, 54, 24, 25, 55, 25],
+      [23, 45, 15, 25, 46, 16],
+
+      // 31
+      [13, 145, 115, 3, 146, 116],
+      [2, 74, 46, 29, 75, 47],
+      [42, 54, 24, 1, 55, 25],
+      [23, 45, 15, 28, 46, 16],
+
+      // 32
+      [17, 145, 115],
+      [10, 74, 46, 23, 75, 47],
+      [10, 54, 24, 35, 55, 25],
+      [19, 45, 15, 35, 46, 16],
+
+      // 33
+      [17, 145, 115, 1, 146, 116],
+      [14, 74, 46, 21, 75, 47],
+      [29, 54, 24, 19, 55, 25],
+      [11, 45, 15, 46, 46, 16],
+
+      // 34
+      [13, 145, 115, 6, 146, 116],
+      [14, 74, 46, 23, 75, 47],
+      [44, 54, 24, 7, 55, 25],
+      [59, 46, 16, 1, 47, 17],
+
+      // 35
+      [12, 151, 121, 7, 152, 122],
+      [12, 75, 47, 26, 76, 48],
+      [39, 54, 24, 14, 55, 25],
+      [22, 45, 15, 41, 46, 16],
+
+      // 36
+      [6, 151, 121, 14, 152, 122],
+      [6, 75, 47, 34, 76, 48],
+      [46, 54, 24, 10, 55, 25],
+      [2, 45, 15, 64, 46, 16],
+
+      // 37
+      [17, 152, 122, 4, 153, 123],
+      [29, 74, 46, 14, 75, 47],
+      [49, 54, 24, 10, 55, 25],
+      [24, 45, 15, 46, 46, 16],
+
+      // 38
+      [4, 152, 122, 18, 153, 123],
+      [13, 74, 46, 32, 75, 47],
+      [48, 54, 24, 14, 55, 25],
+      [42, 45, 15, 32, 46, 16],
+
+      // 39
+      [20, 147, 117, 4, 148, 118],
+      [40, 75, 47, 7, 76, 48],
+      [43, 54, 24, 22, 55, 25],
+      [10, 45, 15, 67, 46, 16],
+
+      // 40
+      [19, 148, 118, 6, 149, 119],
+      [18, 75, 47, 31, 76, 48],
+      [34, 54, 24, 34, 55, 25],
+      [20, 45, 15, 61, 46, 16]
+    ];
+
+    var qrRSBlock = function(totalCount, dataCount) {
+      var _this = {};
+      _this.totalCount = totalCount;
+      _this.dataCount = dataCount;
+      return _this;
+    };
+
+    var _this = {};
+
+    var getRsBlockTable = function(typeNumber, errorCorrectionLevel) {
+
+      switch(errorCorrectionLevel) {
+      case QRErrorCorrectionLevel.L :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+      case QRErrorCorrectionLevel.M :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+      case QRErrorCorrectionLevel.Q :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+      case QRErrorCorrectionLevel.H :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+      default :
+        return undefined;
+      }
+    };
+
+    _this.getRSBlocks = function(typeNumber, errorCorrectionLevel) {
+
+      var rsBlock = getRsBlockTable(typeNumber, errorCorrectionLevel);
+
+      if (typeof rsBlock == 'undefined') {
+        throw 'bad rs block @ typeNumber:' + typeNumber +
+            '/errorCorrectionLevel:' + errorCorrectionLevel;
+      }
+
+      var length = rsBlock.length / 3;
+
+      var list = [];
+
+      for (var i = 0; i < length; i += 1) {
+
+        var count = rsBlock[i * 3 + 0];
+        var totalCount = rsBlock[i * 3 + 1];
+        var dataCount = rsBlock[i * 3 + 2];
+
+        for (var j = 0; j < count; j += 1) {
+          list.push(qrRSBlock(totalCount, dataCount) );
+        }
+      }
+
+      return list;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrBitBuffer
+  //---------------------------------------------------------------------
+
+  var qrBitBuffer = function() {
+
+    var _buffer = [];
+    var _length = 0;
+
+    var _this = {};
+
+    _this.getBuffer = function() {
+      return _buffer;
+    };
+
+    _this.getAt = function(index) {
+      var bufIndex = Math.floor(index / 8);
+      return ( (_buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+    };
+
+    _this.put = function(num, length) {
+      for (var i = 0; i < length; i += 1) {
+        _this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+      }
+    };
+
+    _this.getLengthInBits = function() {
+      return _length;
+    };
+
+    _this.putBit = function(bit) {
+
+      var bufIndex = Math.floor(_length / 8);
+      if (_buffer.length <= bufIndex) {
+        _buffer.push(0);
+      }
+
+      if (bit) {
+        _buffer[bufIndex] |= (0x80 >>> (_length % 8) );
+      }
+
+      _length += 1;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrNumber
+  //---------------------------------------------------------------------
+
+  var qrNumber = function(data) {
+
+    var _mode = QRMode.MODE_NUMBER;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _data;
+
+      var i = 0;
+
+      while (i + 2 < data.length) {
+        buffer.put(strToNum(data.substring(i, i + 3) ), 10);
+        i += 3;
+      }
+
+      if (i < data.length) {
+        if (data.length - i == 1) {
+          buffer.put(strToNum(data.substring(i, i + 1) ), 4);
+        } else if (data.length - i == 2) {
+          buffer.put(strToNum(data.substring(i, i + 2) ), 7);
+        }
+      }
+    };
+
+    var strToNum = function(s) {
+      var num = 0;
+      for (var i = 0; i < s.length; i += 1) {
+        num = num * 10 + chatToNum(s.charAt(i) );
+      }
+      return num;
+    };
+
+    var chatToNum = function(c) {
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      }
+      throw 'illegal char :' + c;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrAlphaNum
+  //---------------------------------------------------------------------
+
+  var qrAlphaNum = function(data) {
+
+    var _mode = QRMode.MODE_ALPHA_NUM;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var s = _data;
+
+      var i = 0;
+
+      while (i + 1 < s.length) {
+        buffer.put(
+          getCode(s.charAt(i) ) * 45 +
+          getCode(s.charAt(i + 1) ), 11);
+        i += 2;
+      }
+
+      if (i < s.length) {
+        buffer.put(getCode(s.charAt(i) ), 6);
+      }
+    };
+
+    var getCode = function(c) {
+
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      } else if ('A' <= c && c <= 'Z') {
+        return c.charCodeAt(0) - 'A'.charCodeAt(0) + 10;
+      } else {
+        switch (c) {
+        case ' ' : return 36;
+        case '$' : return 37;
+        case '%' : return 38;
+        case '*' : return 39;
+        case '+' : return 40;
+        case '-' : return 41;
+        case '.' : return 42;
+        case '/' : return 43;
+        case ':' : return 44;
+        default :
+          throw 'illegal char :' + c;
+        }
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qr8BitByte
+  //---------------------------------------------------------------------
+
+  var qr8BitByte = function(data) {
+
+    var _mode = QRMode.MODE_8BIT_BYTE;
+    var _data = data;
+    var _bytes = qrcode.stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _bytes.length;
+    };
+
+    _this.write = function(buffer) {
+      for (var i = 0; i < _bytes.length; i += 1) {
+        buffer.put(_bytes[i], 8);
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrKanji
+  //---------------------------------------------------------------------
+
+  var qrKanji = function(data) {
+
+    var _mode = QRMode.MODE_KANJI;
+    var _data = data;
+
+    var stringToBytes = qrcode.stringToBytesFuncs['SJIS'];
+    if (!stringToBytes) {
+      throw 'sjis not supported.';
+    }
+    !function(c, code) {
+      // self test for sjis support.
+      var test = stringToBytes(c);
+      if (test.length != 2 || ( (test[0] << 8) | test[1]) != code) {
+        throw 'sjis not supported.';
+      }
+    }('\u53cb', 0x9746);
+
+    var _bytes = stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return ~~(_bytes.length / 2);
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _bytes;
+
+      var i = 0;
+
+      while (i + 1 < data.length) {
+
+        var c = ( (0xff & data[i]) << 8) | (0xff & data[i + 1]);
+
+        if (0x8140 <= c && c <= 0x9FFC) {
+          c -= 0x8140;
+        } else if (0xE040 <= c && c <= 0xEBBF) {
+          c -= 0xC140;
+        } else {
+          throw 'illegal char at ' + (i + 1) + '/' + c;
+        }
+
+        c = ( (c >>> 8) & 0xff) * 0xC0 + (c & 0xff);
+
+        buffer.put(c, 13);
+
+        i += 2;
+      }
+
+      if (i < data.length) {
+        throw 'illegal char at ' + (i + 1);
+      }
+    };
+
+    return _this;
+  };
+
+  //=====================================================================
+  // GIF Support etc.
+  //
+
+  //---------------------------------------------------------------------
+  // byteArrayOutputStream
+  //---------------------------------------------------------------------
+
+  var byteArrayOutputStream = function() {
+
+    var _bytes = [];
+
+    var _this = {};
+
+    _this.writeByte = function(b) {
+      _bytes.push(b & 0xff);
+    };
+
+    _this.writeShort = function(i) {
+      _this.writeByte(i);
+      _this.writeByte(i >>> 8);
+    };
+
+    _this.writeBytes = function(b, off, len) {
+      off = off || 0;
+      len = len || b.length;
+      for (var i = 0; i < len; i += 1) {
+        _this.writeByte(b[i + off]);
+      }
+    };
+
+    _this.writeString = function(s) {
+      for (var i = 0; i < s.length; i += 1) {
+        _this.writeByte(s.charCodeAt(i) );
+      }
+    };
+
+    _this.toByteArray = function() {
+      return _bytes;
+    };
+
+    _this.toString = function() {
+      var s = '';
+      s += '[';
+      for (var i = 0; i < _bytes.length; i += 1) {
+        if (i > 0) {
+          s += ',';
+        }
+        s += _bytes[i];
+      }
+      s += ']';
+      return s;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64EncodeOutputStream
+  //---------------------------------------------------------------------
+
+  var base64EncodeOutputStream = function() {
+
+    var _buffer = 0;
+    var _buflen = 0;
+    var _length = 0;
+    var _base64 = '';
+
+    var _this = {};
+
+    var writeEncoded = function(b) {
+      _base64 += String.fromCharCode(encode(b & 0x3f) );
+    };
+
+    var encode = function(n) {
+      if (n < 0) {
+        // error.
+      } else if (n < 26) {
+        return 0x41 + n;
+      } else if (n < 52) {
+        return 0x61 + (n - 26);
+      } else if (n < 62) {
+        return 0x30 + (n - 52);
+      } else if (n == 62) {
+        return 0x2b;
+      } else if (n == 63) {
+        return 0x2f;
+      }
+      throw 'n:' + n;
+    };
+
+    _this.writeByte = function(n) {
+
+      _buffer = (_buffer << 8) | (n & 0xff);
+      _buflen += 8;
+      _length += 1;
+
+      while (_buflen >= 6) {
+        writeEncoded(_buffer >>> (_buflen - 6) );
+        _buflen -= 6;
+      }
+    };
+
+    _this.flush = function() {
+
+      if (_buflen > 0) {
+        writeEncoded(_buffer << (6 - _buflen) );
+        _buffer = 0;
+        _buflen = 0;
+      }
+
+      if (_length % 3 != 0) {
+        // padding
+        var padlen = 3 - _length % 3;
+        for (var i = 0; i < padlen; i += 1) {
+          _base64 += '=';
+        }
+      }
+    };
+
+    _this.toString = function() {
+      return _base64;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64DecodeInputStream
+  //---------------------------------------------------------------------
+
+  var base64DecodeInputStream = function(str) {
+
+    var _str = str;
+    var _pos = 0;
+    var _buffer = 0;
+    var _buflen = 0;
+
+    var _this = {};
+
+    _this.read = function() {
+
+      while (_buflen < 8) {
+
+        if (_pos >= _str.length) {
+          if (_buflen == 0) {
+            return -1;
+          }
+          throw 'unexpected end of file./' + _buflen;
+        }
+
+        var c = _str.charAt(_pos);
+        _pos += 1;
+
+        if (c == '=') {
+          _buflen = 0;
+          return -1;
+        } else if (c.match(/^\s$/) ) {
+          // ignore if whitespace.
+          continue;
+        }
+
+        _buffer = (_buffer << 6) | decode(c.charCodeAt(0) );
+        _buflen += 6;
+      }
+
+      var n = (_buffer >>> (_buflen - 8) ) & 0xff;
+      _buflen -= 8;
+      return n;
+    };
+
+    var decode = function(c) {
+      if (0x41 <= c && c <= 0x5a) {
+        return c - 0x41;
+      } else if (0x61 <= c && c <= 0x7a) {
+        return c - 0x61 + 26;
+      } else if (0x30 <= c && c <= 0x39) {
+        return c - 0x30 + 52;
+      } else if (c == 0x2b) {
+        return 62;
+      } else if (c == 0x2f) {
+        return 63;
+      } else {
+        throw 'c:' + c;
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // gifImage (B/W)
+  //---------------------------------------------------------------------
+
+  var gifImage = function(width, height) {
+
+    var _width = width;
+    var _height = height;
+    var _data = new Array(width * height);
+
+    var _this = {};
+
+    _this.setPixel = function(x, y, pixel) {
+      _data[y * _width + x] = pixel;
+    };
+
+    _this.write = function(out) {
+
+      //---------------------------------
+      // GIF Signature
+
+      out.writeString('GIF87a');
+
+      //---------------------------------
+      // Screen Descriptor
+
+      out.writeShort(_width);
+      out.writeShort(_height);
+
+      out.writeByte(0x80); // 2bit
+      out.writeByte(0);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Global Color Map
+
+      // black
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+
+      // white
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+
+      //---------------------------------
+      // Image Descriptor
+
+      out.writeString(',');
+      out.writeShort(0);
+      out.writeShort(0);
+      out.writeShort(_width);
+      out.writeShort(_height);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Local Color Map
+
+      //---------------------------------
+      // Raster Data
+
+      var lzwMinCodeSize = 2;
+      var raster = getLZWRaster(lzwMinCodeSize);
+
+      out.writeByte(lzwMinCodeSize);
+
+      var offset = 0;
+
+      while (raster.length - offset > 255) {
+        out.writeByte(255);
+        out.writeBytes(raster, offset, 255);
+        offset += 255;
+      }
+
+      out.writeByte(raster.length - offset);
+      out.writeBytes(raster, offset, raster.length - offset);
+      out.writeByte(0x00);
+
+      //---------------------------------
+      // GIF Terminator
+      out.writeString(';');
+    };
+
+    var bitOutputStream = function(out) {
+
+      var _out = out;
+      var _bitLength = 0;
+      var _bitBuffer = 0;
+
+      var _this = {};
+
+      _this.write = function(data, length) {
+
+        if ( (data >>> length) != 0) {
+          throw 'length over';
+        }
+
+        while (_bitLength + length >= 8) {
+          _out.writeByte(0xff & ( (data << _bitLength) | _bitBuffer) );
+          length -= (8 - _bitLength);
+          data >>>= (8 - _bitLength);
+          _bitBuffer = 0;
+          _bitLength = 0;
+        }
+
+        _bitBuffer = (data << _bitLength) | _bitBuffer;
+        _bitLength = _bitLength + length;
+      };
+
+      _this.flush = function() {
+        if (_bitLength > 0) {
+          _out.writeByte(_bitBuffer);
+        }
+      };
+
+      return _this;
+    };
+
+    var getLZWRaster = function(lzwMinCodeSize) {
+
+      var clearCode = 1 << lzwMinCodeSize;
+      var endCode = (1 << lzwMinCodeSize) + 1;
+      var bitLength = lzwMinCodeSize + 1;
+
+      // Setup LZWTable
+      var table = lzwTable();
+
+      for (var i = 0; i < clearCode; i += 1) {
+        table.add(String.fromCharCode(i) );
+      }
+      table.add(String.fromCharCode(clearCode) );
+      table.add(String.fromCharCode(endCode) );
+
+      var byteOut = byteArrayOutputStream();
+      var bitOut = bitOutputStream(byteOut);
+
+      // clear code
+      bitOut.write(clearCode, bitLength);
+
+      var dataIndex = 0;
+
+      var s = String.fromCharCode(_data[dataIndex]);
+      dataIndex += 1;
+
+      while (dataIndex < _data.length) {
+
+        var c = String.fromCharCode(_data[dataIndex]);
+        dataIndex += 1;
+
+        if (table.contains(s + c) ) {
+
+          s = s + c;
+
+        } else {
+
+          bitOut.write(table.indexOf(s), bitLength);
+
+          if (table.size() < 0xfff) {
+
+            if (table.size() == (1 << bitLength) ) {
+              bitLength += 1;
+            }
+
+            table.add(s + c);
+          }
+
+          s = c;
+        }
+      }
+
+      bitOut.write(table.indexOf(s), bitLength);
+
+      // end code
+      bitOut.write(endCode, bitLength);
+
+      bitOut.flush();
+
+      return byteOut.toByteArray();
+    };
+
+    var lzwTable = function() {
+
+      var _map = {};
+      var _size = 0;
+
+      var _this = {};
+
+      _this.add = function(key) {
+        if (_this.contains(key) ) {
+          throw 'dup key:' + key;
+        }
+        _map[key] = _size;
+        _size += 1;
+      };
+
+      _this.size = function() {
+        return _size;
+      };
+
+      _this.indexOf = function(key) {
+        return _map[key];
+      };
+
+      _this.contains = function(key) {
+        return typeof _map[key] != 'undefined';
+      };
+
+      return _this;
+    };
+
+    return _this;
+  };
+
+  var createDataURL = function(width, height, getPixel) {
+    var gif = gifImage(width, height);
+    for (var y = 0; y < height; y += 1) {
+      for (var x = 0; x < width; x += 1) {
+        gif.setPixel(x, y, getPixel(x, y) );
+      }
+    }
+
+    var b = byteArrayOutputStream();
+    gif.write(b);
+
+    var base64 = base64EncodeOutputStream();
+    var bytes = b.toByteArray();
+    for (var i = 0; i < bytes.length; i += 1) {
+      base64.writeByte(bytes[i]);
+    }
+    base64.flush();
+
+    return 'data:image/gif;base64,' + base64;
+  };
+
+  //---------------------------------------------------------------------
+  // returns qrcode function.
+
+  return qrcode;
+}();
+
+// multibyte support
+!function() {
+
+  qrcode.stringToBytesFuncs['UTF-8'] = function(s) {
+    // http://stackoverflow.com/questions/18729405/how-to-convert-utf8-string-to-byte-array
+    function toUTF8Array(str) {
+      var utf8 = [];
+      for (var i=0; i < str.length; i++) {
+        var charcode = str.charCodeAt(i);
+        if (charcode < 0x80) utf8.push(charcode);
+        else if (charcode < 0x800) {
+          utf8.push(0xc0 | (charcode >> 6),
+              0x80 | (charcode & 0x3f));
+        }
+        else if (charcode < 0xd800 || charcode >= 0xe000) {
+          utf8.push(0xe0 | (charcode >> 12),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+        // surrogate pair
+        else {
+          i++;
+          // UTF-16 encodes 0x10000-0x10FFFF by
+          // subtracting 0x10000 and splitting the
+          // 20 bits of 0x0-0xFFFFF into two halves
+          charcode = 0x10000 + (((charcode & 0x3ff)<<10)
+            | (str.charCodeAt(i) & 0x3ff));
+          utf8.push(0xf0 | (charcode >>18),
+              0x80 | ((charcode>>12) & 0x3f),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+      }
+      return utf8;
+    }
+    return toUTF8Array(s);
+  };
+
+}();
+
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var loops = { c: null };
+
+  /* ============================= VIEW C: TIDELINE ============================= */
+  var canvasC = document.getElementById('canvasC'), ctxC = canvasC.getContext('2d');
+  var gridC = 24, ripples = [], tC = 0, crossPts = [];
+  var LEVELS = (function () { var a = []; for (var i = 0; i < 8; i++) a.push(0.15 + i * (1.15 / 7)); return a; })();
+  var ISLAND_DEFS = [];
+  function islandRadiusAt(isl, theta) {
+    var r = isl.r, sum = 0;
+    for (var i = 0; i < isl.harm.length; i++) { var hh = isl.harm[i]; sum += hh[1] * Math.sin(hh[0] * theta + isl.seed * hh[2]); }
+    return r * (1 + sum);
   }
-
-  // Hash routing
-  function route(){
-    var hash = window.location.hash;
-    if(hash === '#about'){
-      document.getElementById('landing').classList.add('hidden');
-      document.getElementById('about-page').classList.add('active');
-      window.scrollTo(0,0);
-    } else {
-      document.getElementById('about-page').classList.remove('active');
-      document.getElementById('landing').classList.remove('hidden');
-      // Re-init observer for sections that haven't animated yet
-      initObserver();
+  function islandLocalPolar(isl, wx, wy) {
+    var dx = wx - isl.x, dy = wy - isl.y;
+    if (isl.rot || isl.sx || isl.sy) {
+      var c = Math.cos(-isl.rot), s = Math.sin(-isl.rot);
+      var rx = dx * c - dy * s, ry = dx * s + dy * c;
+      dx = rx / (isl.sx || 1); dy = ry / (isl.sy || 1);
+    }
+    return { dist: Math.sqrt(dx * dx + dy * dy), theta: Math.atan2(dy, dx) };
+  }
+  function islandBoundaryPoint(isl, theta) {
+    var rad = islandRadiusAt(isl, theta);
+    var lx = rad * Math.cos(theta), ly = rad * Math.sin(theta);
+    if (isl.rot || isl.sx || isl.sy) {
+      lx *= (isl.sx || 1); ly *= (isl.sy || 1);
+      var c = Math.cos(isl.rot), s = Math.sin(isl.rot);
+      var wx = lx * c - ly * s, wy = lx * s + ly * c;
+      return [isl.x + wx, isl.y + wy];
+    }
+    return [isl.x + lx, isl.y + ly];
+  }
+  var islands = [], shark = null, eggFish = [], foods = [];
+  function sizeC() {
+    canvasC.width = window.innerWidth; canvasC.height = window.innerHeight;
+    crossPts = [];
+    var n = Math.round((canvasC.width * canvasC.height) / 14000);
+    for (var i = 0; i < n; i++) crossPts.push({ x: Math.random() * canvasC.width, y: Math.random() * canvasC.height, r: 3 + Math.random() * 4, ph: Math.random() * Math.PI * 2 });
+    var prevIslands = islands;
+    islands = ISLAND_DEFS.map(function (d, di) {
+      var reach = Math.max(d.r * (d.sx || 1), d.r * (d.sy || 1)) * 1.8;
+      var prev = prevIslands && prevIslands[di];
+      return {
+        x: prev ? prev.x : d.fx * canvasC.width, y: prev ? prev.y : d.fy * canvasC.height,
+        fx: d.fx, fy: d.fy, r: d.r, h: d.h, seed: d.seed, harm: d.harm, sx: d.sx, sy: d.sy, rot: d.rot, cut2: reach * reach,
+        vx: prev ? prev.vx : 0, vy: prev ? prev.vy : 0
+      };
+    });
+    if (!shark) shark = { x: canvasC.width * 0.5, y: canvasC.height * 0.55, angle: Math.random() * Math.PI * 2, wander: 0, wob: 0, speed: 1.7 };
+    shark.x = Math.min(Math.max(shark.x, 55), canvasC.width - 55);
+    shark.y = Math.min(Math.max(shark.y, 55), canvasC.height - 55);
+    updateHeroZone();
+  }
+  function angleDiff(a, b) { return ((a - b + Math.PI * 3) % (Math.PI * 2)) - Math.PI; }
+  function spawnRipple(x, y, strength) { ripples.push({ x: x, y: y, t: 0, s: strength || 1 }); if (ripples.length > 8) ripples.shift(); }
+  function spawnFood(x, y) { foods.push({ x: x, y: y, floatY: y, drift: (Math.random() - 0.5) * 0.5, seed: Math.random() * 10, age: 0, sinking: true }); if (foods.length > 6) foods.shift(); }
+  function stepFoods() {
+    for (var i = foods.length - 1; i >= 0; i--) {
+      var f = foods[i]; f.age++;
+      if (f.sinking) {
+        var sinkT = Math.min(f.age, 30) / 30;
+        f.y += 1.6 * Math.sin(Math.PI * sinkT);
+        if (f.age % 14 === 0) spawnRipple(f.x, f.y, 0.16);
+        if (f.age >= 30) { f.sinking = false; f.floatY = f.y; }
+      } else {
+        f.y = f.floatY + Math.sin(f.age * 0.05 + f.seed) * 2.2;
+      }
+      f.x += Math.sin(f.age * 0.05 + f.seed) * f.drift;
+      if (f.y > canvasC.height + 20 || f.age > 600) foods.splice(i, 1);
     }
   }
+  function drawFoods() {
+    for (var i = 0; i < foods.length; i++) {
+      var f = foods[i];
+      var settle = Math.min(1, f.age / 16);
+      var expireFade = f.age > 560 ? Math.max(0, (600 - f.age) / 40) : 1;
+      var a = settle * expireFade;
+      ctxC.save();
+      ctxC.translate(f.x, f.y);
+      ctxC.rotate(f.sinking ? f.age * 0.05 + f.seed : Math.sin(f.age * 0.04 + f.seed) * 0.3);
+      ctxC.beginPath(); ctxC.ellipse(0, 0, 2.7, 1.5, 0, 0, Math.PI * 2);
+      ctxC.fillStyle = 'rgba(255,255,255,' + (0.55 * a) + ')'; ctxC.fill();
+      ctxC.lineWidth = 1; ctxC.strokeStyle = 'rgba(255,255,255,' + (0.25 * a) + ')'; ctxC.stroke();
+      ctxC.restore();
+    }
+  }
+  function spawnEggFish() {
+    eggFish.push({ x: -40, y: canvasC.height * (0.15 + Math.random() * 0.6), v: 1.6 + Math.random() * 0.8, glyph: Math.random() > 0.5 ? '><((\'>' : '<\'))><' });
+  }
+  function stepEggFish() {
+    for (var i = eggFish.length - 1; i >= 0; i--) {
+      var f = eggFish[i];
+      f.x += f.v; f.y += Math.sin((tC + i * 10) * 0.03) * 0.4;
+      if (tC % 6 === 0) spawnRipple(f.x, f.y, 0.5);
+      if (f.x > canvasC.width + 60) eggFish.splice(i, 1);
+    }
+  }
+  function drawEggFish() {
+    ctxC.font = (gridC * 1.4) + 'px ui-monospace, monospace'; ctxC.textBaseline = 'top';
+    ctxC.fillStyle = 'rgba(255,255,255,0.9)';
+    eggFish.forEach(function (f) { ctxC.fillText(f.glyph, f.x, f.y); });
+  }
+  var HERO_ZONE = null;
+  function updateHeroZone() {
+    var els = [];
+    var heroEl = document.querySelector('.vC .hero');
+    if (heroEl) els.push(heroEl.querySelector('h1'), heroEl.querySelector('p'));
+    var chipListEl = document.getElementById('chipListC');
+    if (chipListEl) els = els.concat(Array.prototype.slice.call(chipListEl.children));
+    var iconsEl = document.querySelector('.vC .iconsBelow');
+    if (iconsEl) els = els.concat(Array.prototype.slice.call(iconsEl.children));
+    els = els.filter(Boolean);
+    if (!els.length) { HERO_ZONE = { cx: canvasC.width * 0.5, cy: canvasC.height * 0.335, rx: 430, ry: 150 }; return; }
+    var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    els.forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      minX = Math.min(minX, r.left); minY = Math.min(minY, r.top);
+      maxX = Math.max(maxX, r.right); maxY = Math.max(maxY, r.bottom);
+    });
+    var pad = 30;
+    minX -= pad; minY -= pad; maxX += pad; maxY += pad;
+    HERO_ZONE = { cx: (minX + maxX) / 2, cy: (minY + maxY) / 2, rx: (maxX - minX) / 2, ry: (maxY - minY) / 2 };
+  }
+  function islandAvoid(isl) {
+    var lp = islandLocalPolar(isl, shark.x, shark.y);
+    var rEff = islandRadiusAt(isl, lp.theta), margin = 90, dist = lp.dist;
+    if (!isl._avoid) isl._avoid = {};
+    var state = isl._avoid;
+    if (dist >= rEff + margin) { state.sign = undefined; return null; }
+    var dx = shark.x - isl.x, dy = shark.y - isl.y;
+    var outward = Math.atan2(dy, dx);
+    if (state.sign === undefined) state.sign = angleDiff(outward, shark.angle) >= 0 ? -1 : 1;
+    var tangent = outward + state.sign * Math.PI / 2;
+    var depth = Math.max(0, (rEff + margin - dist) / margin);
+    var inside = Math.max(0, (rEff + 6 - dist) / (rEff + 6));
+    var delta = angleDiff(tangent, shark.angle) * (1 - inside) + angleDiff(outward, shark.angle) * inside;
+    return { delta: delta, weight: Math.min(1, Math.max(depth, inside)) };
+  }
+  function heroAvoid() {
+    var wdx = shark.x - HERO_ZONE.cx, wdy = shark.y - HERO_ZONE.cy;
+    var ndist = Math.sqrt((wdx / HERO_ZONE.rx) * (wdx / HERO_ZONE.rx) + (wdy / HERO_ZONE.ry) * (wdy / HERO_ZONE.ry)) || 0.001;
+    var margin = 0.65;
+    if (!HERO_ZONE._avoid) HERO_ZONE._avoid = {};
+    var state = HERO_ZONE._avoid;
+    if (ndist >= 1 + margin) { state.sign = undefined; return null; }
+    var outward = Math.atan2(wdy, wdx);
+    if (state.sign === undefined) state.sign = angleDiff(outward, shark.angle) >= 0 ? -1 : 1;
+    var tangent = outward + state.sign * Math.PI / 2;
+    var depth = Math.max(0, (1 + margin - ndist) / margin);
+    var inside = Math.max(0, (1.08 - ndist) / 1.08);
+    var delta = angleDiff(tangent, shark.angle) * (1 - inside) + angleDiff(outward, shark.angle) * inside;
+    return { delta: delta, weight: Math.min(1, Math.max(depth, inside)) };
+  }
+  function borderAvoid() {
+    var margin = 140;
+    var dLeft = shark.x, dRight = canvasC.width - shark.x, dTop = shark.y, dBottom = canvasC.height - shark.y;
+    var nx = 0, ny = 0, minD = margin;
+    if (dLeft < margin) { nx += (margin - dLeft); minD = Math.min(minD, dLeft); }
+    if (dRight < margin) { nx -= (margin - dRight); minD = Math.min(minD, dRight); }
+    if (dTop < margin) { ny += (margin - dTop); minD = Math.min(minD, dTop); }
+    if (dBottom < margin) { ny -= (margin - dBottom); minD = Math.min(minD, dBottom); }
+    if (nx === 0 && ny === 0) return null;
+    var inward = Math.atan2(ny, nx);
+    var depth = Math.max(0, (margin - minD) / margin);
+    return { delta: angleDiff(inward, shark.angle), weight: Math.min(1, depth * depth + depth * 0.6) };
+  }
+  function stepFish() {
+    shark.wob += 0.14;
+    var turnRate = 0.045, desiredAngle = shark.angle, targetSpeed = 1.7;
+    var sumDelta = 0, sumWeight = 0, maxWeight = 0;
+    for (var j = 0; j < islands.length; j++) {
+      var hit = islandAvoid(islands[j]);
+      if (hit) { sumDelta += hit.delta * hit.weight; sumWeight += hit.weight; maxWeight = Math.max(maxWeight, hit.weight); }
+    }
+    var heroHit = heroAvoid();
+    if (heroHit) { sumDelta += heroHit.delta * heroHit.weight; sumWeight += heroHit.weight; maxWeight = Math.max(maxWeight, heroHit.weight); }
+    var borderHit = borderAvoid();
+    if (borderHit) { sumDelta += borderHit.delta * borderHit.weight; sumWeight += borderHit.weight; maxWeight = Math.max(maxWeight, borderHit.weight); }
+    var mouthX = shark.x + Math.cos(shark.angle) * 30, mouthY = shark.y + Math.sin(shark.angle) * 30;
+    if (sumWeight > 0) {
+      desiredAngle = shark.angle + sumDelta / sumWeight;
+      turnRate = 0.05 + maxWeight * 0.16;
+    } else if (foods.length) {
+      var nearest = foods[0], best = Infinity;
+      for (var k = 0; k < foods.length; k++) {
+        var f = foods[k], fd = (f.x - shark.x) * (f.x - shark.x) + (f.y - shark.y) * (f.y - shark.y);
+        if (fd < best) { best = fd; nearest = f; }
+      }
+      desiredAngle = Math.atan2(nearest.y - shark.y, nearest.x - shark.x);
+      turnRate = best < 3600 ? 0.16 : 0.07;
+      targetSpeed = 3.2;
+      var dmx = nearest.x - mouthX, dmy = nearest.y - mouthY;
+      if (dmx * dmx + dmy * dmy < 900) { foods.splice(foods.indexOf(nearest), 1); spawnRipple(nearest.x, nearest.y, 0.9); }
+    } else {
+      shark.wander += (Math.random() - 0.5) * 0.006;
+      shark.wander = Math.max(-0.03, Math.min(0.03, shark.wander));
+      desiredAngle = shark.angle + shark.wander * 12;
+      turnRate = 0.02;
+    }
+    var turn = angleDiff(desiredAngle, shark.angle);
+    shark.angle += Math.max(-turnRate, Math.min(turnRate, turn));
+    shark.speed += (targetSpeed - shark.speed) * 0.06;
+    shark.x += Math.cos(shark.angle) * shark.speed;
+    shark.y += Math.sin(shark.angle) * shark.speed;
+    shark.x = Math.min(Math.max(shark.x, 55), canvasC.width - 55);
+    shark.y = Math.min(Math.max(shark.y, 55), canvasC.height - 55);
+    if (tC % 10 === 0) spawnRipple(shark.x - Math.cos(shark.angle) * 30, shark.y - Math.sin(shark.angle) * 30, 0.28);
+  }
+  function drawSharkRealistic(ctx, wobble) {
+    var N = 16;
+    var PROF = [2.4, 3.9, 4.4, 4.4, 4.2, 3.9, 3.5, 3.1, 2.7, 2.3, 1.95, 1.65, 1.35, 1.05, 0.8, 0.55, 0.3];
+    var TAU = 6.28318530718;
+    function sway(t) { return Math.sin(wobble - t * 5.0) * (0.35 + 3.0 * t * t); }
+    function px(t) { return t <= 0.35 ? 15 - 38 * t : 1.7 - (t - 0.35) * 64; }
+    function wAt(t) {
+      var f = t * N, i0 = Math.floor(f);
+      if (i0 >= N) i0 = N - 1;
+      var fr = f - i0;
+      return PROF[i0] * (1 - fr) + PROF[i0 + 1] * fr;
+    }
+    function rnd(k) { var s = Math.sin(k * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); }
 
-  window.showAbout = function(){
-    window.location.hash = 'about';
+    var sx = [], sy = [], i, t, s;
+    for (i = 0; i <= N; i++) { t = i / N; sx.push(px(t)); sy.push(sway(t)); }
+    var noseY = sy[0];
+
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+
+    // caudal fin: long blade trailing past the tail tip + small ventral lobe
+    var dxT = sx[N] - sx[N - 1], dyT = sy[N] - sy[N - 1];
+    var lenT = Math.sqrt(dxT * dxT + dyT * dyT) || 1;
+    var exT = sx[N] + (dxT / lenT) * 6.2;
+    var eyT = sy[N] + (dyT / lenT) * 6.2 + Math.sin(wobble - 5.9) * 0.9;
+    ctx.beginPath();
+    ctx.moveTo(sx[N - 2], sy[N - 2] - 0.9);
+    ctx.quadraticCurveTo(sx[N] - 1.0, sy[N] - 1.7, exT, eyT);
+    ctx.quadraticCurveTo(sx[N], sy[N] + 1.3, sx[N - 2], sy[N - 2] + 0.9);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(255,255,255,0.18)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+    ctx.lineWidth = 0.55;
+    ctx.stroke();
+    var vx = px(0.88), vy = sway(0.88);
+    ctx.beginPath();
+    ctx.moveTo(vx + 1.0, vy);
+    ctx.quadraticCurveTo(vx - 0.9, vy + 2.4, vx - 2.3, vy + 0.7);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    // paired fins, drawn under the body: big forward pectoral paddles + smaller pelvics
+    ctx.fillStyle = 'rgba(255,255,255,0.16)';
+    ctx.strokeStyle = 'rgba(255,255,255,0.75)';
+    ctx.lineWidth = 0.65;
+    var byP = sway(0.12), byV = sway(0.30);
+    for (s = -1; s <= 1; s += 2) {
+      var flap = Math.sin(wobble + s * 1.57) * 0.7;
+      ctx.beginPath();
+      ctx.moveTo(11.8, byP + s * 2.6);
+      ctx.bezierCurveTo(11.6 + flap, byP + s * 7.6, 8.2 + flap, byP + s * 9.2, 6.2, byP + s * 7.2);
+      ctx.bezierCurveTo(5.3, byP + s * 5.6, 6.1, byP + s * 3.5, 7.6, byP + s * 3.1);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      var flap2 = Math.sin(wobble - s * 1.57) * 0.5;
+      ctx.beginPath();
+      ctx.moveTo(4.7, byV + s * 2.2);
+      ctx.bezierCurveTo(4.5 + flap2, byV + s * 5.0, 2.4 + flap2, byV + s * 6.0, 1.3, byV + s * 4.6);
+      ctx.quadraticCurveTo(1.1, byV + s * 3.0, 2.4, byV + s * 2.1);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    }
+
+    // body silhouette: wide flat head, blunt rounded snout, long whip tail
+    ctx.beginPath();
+    ctx.moveTo(sx[1], sy[1] - PROF[1]);
+    for (i = 2; i <= N; i++) ctx.lineTo(sx[i], sy[i] - PROF[i]);
+    ctx.lineTo(sx[N], sy[N]);
+    for (i = N - 1; i >= 1; i--) ctx.lineTo(sx[i], sy[i] + PROF[i]);
+    ctx.quadraticCurveTo(16.6, noseY + 2.6, 16.9, noseY);
+    ctx.quadraticCurveTo(16.6, noseY - 2.6, sx[1], sy[1] - PROF[1]);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(255,255,255,0.22)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+
+    // faint spine centerline
+    ctx.beginPath();
+    ctx.moveTo(sx[0], sy[0]);
+    for (i = 1; i <= N; i++) ctx.lineTo(sx[i], sy[i]);
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.lineWidth = 0.4;
+    ctx.stroke();
+
+    // two small dorsal fins, set well back toward the tail, leaning with the sway
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+    ctx.lineWidth = 0.5;
+    var d1x = px(0.44), d1y = sway(0.44);
+    var lean1 = (sway(0.52) - sway(0.36)) * 0.55;
+    ctx.beginPath();
+    ctx.moveTo(d1x + 1.5, d1y);
+    ctx.quadraticCurveTo(d1x - 0.5, d1y - 1.15, d1x - 2.3, d1y + lean1);
+    ctx.quadraticCurveTo(d1x - 0.5, d1y + 1.15, d1x + 1.5, d1y);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    var d2x = px(0.58), d2y = sway(0.58);
+    var lean2 = (sway(0.66) - sway(0.50)) * 0.55;
+    ctx.beginPath();
+    ctx.moveTo(d2x + 1.2, d2y);
+    ctx.quadraticCurveTo(d2x - 0.4, d2y - 0.95, d2x - 1.9, d2y + lean2);
+    ctx.quadraticCurveTo(d2x - 0.4, d2y + 0.95, d2x + 1.2, d2y);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    // gill slits
+    ctx.beginPath();
+    for (s = -1; s <= 1; s += 2) {
+      for (i = 0; i < 4; i++) {
+        var gx = 11.5 - i * 0.75;
+        var gy = sway((15 - gx) / 38);
+        ctx.moveTo(gx, gy + s * 1.9);
+        ctx.lineTo(gx - 0.5, gy + s * 3.1);
+      }
+    }
+    ctx.strokeStyle = 'rgba(255,255,255,0.45)';
+    ctx.lineWidth = 0.35;
+    ctx.stroke();
+
+    // leopard spot scatter (seeded, skips the ocelli zone)
+    var ox = px(0.185), oBase = sway(0.185), ow = wAt(0.185);
+    var oyA = oBase - ow * 0.54, oyB = oBase + ow * 0.54;
+    ctx.beginPath();
+    for (i = 0; i < 26; i++) {
+      var st = 0.05 + 0.88 * rnd(i * 3 + 1);
+      var su = rnd(i * 3 + 2) * 2 - 1;
+      var spx = px(st), hw = wAt(st);
+      var spy = sway(st) + su * hw * 0.7;
+      var dA = (spx - ox) * (spx - ox) + (spy - oyA) * (spy - oyA);
+      var dB = (spx - ox) * (spx - ox) + (spy - oyB) * (spy - oyB);
+      if (dA < 7.5 || dB < 7.5) continue;
+      var r = (0.3 + 0.38 * rnd(i * 3 + 3)) * (0.55 + 0.45 * (1 - st));
+      ctx.moveTo(spx + r, spy);
+      ctx.arc(spx, spy, r, 0, TAU);
+    }
+    ctx.fillStyle = 'rgba(0,0,0,0.55)';
+    ctx.fill();
+
+    // the epaulette ocelli: big dark discs with a bright ring + faint outer halo
+    for (s = -1; s <= 1; s += 2) {
+      var oy = oBase + s * ow * 0.54;
+      ctx.beginPath();
+      ctx.arc(ox, oy, 1.85, 0, TAU);
+      ctx.fillStyle = 'rgba(0,0,0,0.85)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.95)';
+      ctx.lineWidth = 0.55;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(ox, oy, 2.5, 0, TAU);
+      ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+      ctx.lineWidth = 0.35;
+      ctx.stroke();
+    }
+
+    // eyes + pupils + nasal barbels
+    var eyY = sway(0.055);
+    ctx.beginPath();
+    ctx.moveTo(13.4, eyY - 1.7);
+    ctx.arc(12.9, eyY - 1.7, 0.5, 0, TAU);
+    ctx.moveTo(13.4, eyY + 1.7);
+    ctx.arc(12.9, eyY + 1.7, 0.5, 0, TAU);
+    ctx.fillStyle = 'rgba(255,255,255,0.95)';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(13.12, eyY - 1.7);
+    ctx.arc(12.9, eyY - 1.7, 0.22, 0, TAU);
+    ctx.moveTo(13.12, eyY + 1.7);
+    ctx.arc(12.9, eyY + 1.7, 0.22, 0, TAU);
+    ctx.fillStyle = 'rgba(0,0,0,0.8)';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(15.2, noseY - 1.0);
+    ctx.quadraticCurveTo(16.3, noseY - 1.5, 16.9, noseY - 2.1);
+    ctx.moveTo(15.2, noseY + 1.0);
+    ctx.quadraticCurveTo(16.3, noseY + 1.5, 16.9, noseY + 2.1);
+    ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+    ctx.lineWidth = 0.35;
+    ctx.stroke();
+  }
+  function drawShark() {
+    ctxC.save();
+    ctxC.translate(shark.x, shark.y);
+    ctxC.rotate(shark.angle);
+    ctxC.scale(2, 2);
+    drawSharkRealistic(ctxC, shark.wob);
+    ctxC.restore();
+  }
+  var RIPPLE_CUTOFF2 = 62500;
+  function rippleAmplitude(r, d) {
+    return Math.sin(d * 0.045 - r.t * 0.32) * Math.exp(-d * 0.012) * Math.exp(-r.t * 0.025) * r.s * 0.25;
+  }
+  var GALAXY_STYLE = 'nebula', GALAXY_OMEGA = 0.0016;
+  function initGalaxy(isl) {
+    var seed = isl.seed || 1;
+    function rnd(k) { var s = Math.sin(k * 127.1 + seed * 311.7) * 43758.5453; return s - Math.floor(s); }
+    var arms = 2 + (Math.floor(seed) % 2), armPts = [], turns = 2.2 + rnd(1) * 0.6;
+    for (var a = 0; a < arms; a++) {
+      var pts = [], off = (a / arms) * Math.PI * 2;
+      for (var i = 0; i <= 48; i++) {
+        var t = i / 48, theta0 = off + t * turns * Math.PI * 2, rad0 = t * isl.r * 0.95;
+        var wob = Math.sin(theta0 * 3 + seed) * isl.r * 0.045 * t;
+        pts.push({ theta0: theta0, rad: rad0 + wob, t: t });
+      }
+      armPts.push(pts);
+    }
+    var stars = [];
+    for (var s = 0; s < 34; s++) {
+      var t2 = rnd(s * 3 + 5), theta2 = rnd(s * 3 + 6) * Math.PI * 2, rad2 = Math.sqrt(t2) * isl.r * 0.95;
+      stars.push({ theta0: theta2, rad: rad2, r: 0.4 + rnd(s * 3 + 7) * 0.9, ph: rnd(s * 3 + 8) * Math.PI * 2, warm: rnd(s * 3 + 9) > 0.7 });
+    }
+    var dust = [];
+    armPts.forEach(function (pts, ai) {
+      pts.forEach(function (p, pi) {
+        if (pi % 2 !== 0) return;
+        for (var d = 0; d < 3; d++) {
+          var jr = (rnd(ai * 97 + pi * 5 + d * 13 + 1) - 0.5) * isl.r * 0.16 * (0.4 + p.t);
+          var ja = (rnd(ai * 61 + pi * 7 + d * 17 + 2) - 0.5) * 0.6;
+          dust.push({
+            theta0: p.theta0 + ja, rad: Math.max(4, p.rad + jr), t: p.t,
+            r: (0.6 + rnd(ai * 41 + pi * 3 + d + 3) * 2.2) * (1 - p.t * 0.5),
+            a: (0.5 - p.t * 0.35) * (0.4 + rnd(ai * 23 + pi + d + 4) * 0.6),
+            warm: rnd(ai * 31 + pi * 2 + d + 5) > 0.6
+          });
+        }
+      });
+    });
+    isl._gal = { armPts: armPts, stars: stars, dust: dust };
+  }
+  function galaxyBeginTransform(isl) {
+    ctxC.save();
+    ctxC.translate(isl.x, isl.y);
+    ctxC.rotate(isl.rot || 0);
+    ctxC.scale(isl.sx || 1, isl.sy || 1);
+  }
+  var GALAXY_TILT = 0.22;
+  function galaxyPos(p) {
+    var theta = p.theta0 + tC * GALAXY_OMEGA;
+    var x = Math.cos(theta) * p.rad, y = Math.sin(theta) * p.rad;
+    y *= y > 0 ? (1 + GALAXY_TILT) : (1 - GALAXY_TILT * 0.55);
+    return { x: x, y: y };
+  }
+  function drawGalaxyNebula(isl, g) {
+    var blobs = [[0, 0, isl.r * 0.62, 'rgba(200,190,255,0.10)'], [isl.r * 0.1, -isl.r * 0.05, isl.r * 0.38, 'rgba(150,175,255,0.09)']];
+    blobs.forEach(function (b) {
+      var gr = ctxC.createRadialGradient(b[0], b[1], 0, b[0], b[1], b[2]);
+      gr.addColorStop(0, b[3]); gr.addColorStop(1, 'rgba(150,175,255,0)');
+      ctxC.fillStyle = gr; ctxC.beginPath(); ctxC.arc(b[0], b[1], b[2], 0, Math.PI * 2); ctxC.fill();
+    });
+    var far = [], near = [];
+    g.dust.forEach(function (d) {
+      var p = galaxyPos(d), depth = p.y / isl.r;
+      (depth < 0 ? far : near).push({ p: p, d: d, depth: depth });
+    });
+    function drawDust(list, dim) {
+      list.forEach(function (o) {
+        var scl = 1 + o.depth * 0.3, a = o.d.a * (dim ? 0.5 : 1);
+        ctxC.beginPath(); ctxC.arc(o.p.x, o.p.y, Math.max(0.2, o.d.r * scl), 0, Math.PI * 2);
+        ctxC.fillStyle = o.d.warm ? 'rgba(255,214,180,' + a + ')' : 'rgba(205,220,255,' + a + ')';
+        ctxC.fill();
+      });
+    }
+    drawDust(far, true);
+    var bulgeAspect = 0.8, counterScl = bulgeAspect / (isl.sy || 1);
+    var bulgeCY = isl.r * 0.05;
+    ctxC.save();
+    ctxC.scale(1, counterScl);
+    var bulgeR = isl.r * 0.36;
+    var bulge = ctxC.createRadialGradient(0, bulgeCY, 0, 0, bulgeCY, bulgeR);
+    bulge.addColorStop(0, 'rgba(255,250,240,0.95)');
+    bulge.addColorStop(0.4, 'rgba(255,232,200,0.5)');
+    bulge.addColorStop(1, 'rgba(255,225,190,0)');
+    ctxC.fillStyle = bulge; ctxC.beginPath(); ctxC.arc(0, bulgeCY, bulgeR, 0, Math.PI * 2); ctxC.fill();
+    var laneW = isl.r * 0.62, laneH = isl.r * 0.05;
+    var lane = ctxC.createLinearGradient(-laneW, bulgeCY, laneW, bulgeCY);
+    lane.addColorStop(0, 'rgba(8,7,14,0)');
+    lane.addColorStop(0.5, 'rgba(8,7,14,0.5)');
+    lane.addColorStop(1, 'rgba(8,7,14,0)');
+    ctxC.fillStyle = lane; ctxC.beginPath(); ctxC.ellipse(0, bulgeCY, laneW, laneH, 0, 0, Math.PI * 2); ctxC.fill();
+    ctxC.restore();
+    drawDust(near, false);
+    g.stars.forEach(function (st) {
+      var p = galaxyPos(st), depth = p.y / isl.r;
+      var tw = 0.5 + 0.5 * Math.sin(tC * 0.03 + st.ph);
+      var a = (0.25 + 0.6 * tw) * (depth < 0 ? 0.55 : 1);
+      ctxC.beginPath(); ctxC.arc(p.x, p.y, Math.max(0.2, st.r * (1 + depth * 0.3)), 0, Math.PI * 2);
+      ctxC.fillStyle = (st.warm ? 'rgba(255,224,190,' : 'rgba(255,255,255,') + a + ')';
+      ctxC.fill();
+    });
+  }
+  function drawGalaxySpiral(isl, g) {
+    g.armPts.forEach(function (pts) {
+      var prev = null;
+      pts.forEach(function (p) {
+        var cur = galaxyPos(p);
+        if (prev) {
+          ctxC.beginPath(); ctxC.moveTo(prev.x, prev.y); ctxC.lineTo(cur.x, cur.y);
+          ctxC.lineWidth = 2.6 * (1 - p.t) + 0.4;
+          ctxC.strokeStyle = 'rgba(215,225,255,' + (0.32 * (1 - p.t * 0.6)) + ')';
+          ctxC.lineCap = 'round'; ctxC.stroke();
+        }
+        prev = cur;
+      });
+    });
+    g.stars.forEach(function (st) {
+      var p = galaxyPos(st);
+      var tw = 0.5 + 0.5 * Math.sin(tC * 0.03 + st.ph);
+      ctxC.beginPath(); ctxC.arc(p.x, p.y, st.r, 0, Math.PI * 2);
+      ctxC.fillStyle = 'rgba(255,255,255,' + (0.25 + 0.55 * tw) + ')'; ctxC.fill();
+    });
+    var glow = ctxC.createRadialGradient(0, 0, 0, 0, 0, isl.r * 0.3);
+    glow.addColorStop(0, 'rgba(255,255,255,0.85)');
+    glow.addColorStop(0.5, 'rgba(210,225,255,0.25)');
+    glow.addColorStop(1, 'rgba(210,225,255,0)');
+    ctxC.fillStyle = glow; ctxC.beginPath(); ctxC.arc(0, 0, isl.r * 0.3, 0, Math.PI * 2); ctxC.fill();
+  }
+  function drawGalaxyStructured(isl, g) {
+    for (var ring = 1; ring <= 3; ring++) {
+      ctxC.beginPath(); ctxC.arc(0, 0, isl.r * ring * 0.3, 0, Math.PI * 2);
+      ctxC.strokeStyle = 'rgba(190,205,255,0.06)'; ctxC.lineWidth = 1; ctxC.stroke();
+    }
+    g.armPts.forEach(function (rawPts) {
+      var pts = rawPts.map(function (p) { var c = galaxyPos(p); return { x: c.x, y: c.y, t: p.t }; });
+      var widths = pts.map(function (p) { return isl.r * 0.055 * (1 - p.t * 0.85) + 0.6; });
+      ctxC.beginPath();
+      for (var i = 0; i < pts.length; i++) {
+        var p = pts[i], ang = Math.atan2(p.y, p.x), nx = -Math.sin(ang), ny = Math.cos(ang);
+        var ex = p.x + nx * widths[i], ey = p.y + ny * widths[i];
+        if (i === 0) ctxC.moveTo(ex, ey); else ctxC.lineTo(ex, ey);
+      }
+      for (var j = pts.length - 1; j >= 0; j--) {
+        var p2 = pts[j], ang2 = Math.atan2(p2.y, p2.x), nx2 = -Math.sin(ang2), ny2 = Math.cos(ang2);
+        ctxC.lineTo(p2.x - nx2 * widths[j], p2.y - ny2 * widths[j]);
+      }
+      ctxC.closePath();
+      var last = pts[pts.length - 1];
+      var rg = ctxC.createRadialGradient(0, 0, 0, 0, 0, Math.max(1, Math.hypot(last.x, last.y)));
+      rg.addColorStop(0, 'rgba(225,235,255,0.55)');
+      rg.addColorStop(1, 'rgba(225,235,255,0)');
+      ctxC.fillStyle = rg; ctxC.fill();
+      ctxC.beginPath();
+      pts.forEach(function (p, i) { if (i === 0) ctxC.moveTo(p.x, p.y); else ctxC.lineTo(p.x, p.y); });
+      ctxC.strokeStyle = 'rgba(255,255,255,0.5)'; ctxC.lineWidth = 0.6; ctxC.stroke();
+    });
+    ctxC.strokeStyle = 'rgba(255,255,255,0.55)'; ctxC.lineWidth = 0.8;
+    ctxC.beginPath(); ctxC.moveTo(-isl.r * 0.4, 0); ctxC.lineTo(isl.r * 0.4, 0); ctxC.moveTo(0, -isl.r * 0.4); ctxC.lineTo(0, isl.r * 0.4); ctxC.stroke();
+    var core = ctxC.createRadialGradient(0, 0, 0, 0, 0, isl.r * 0.12);
+    core.addColorStop(0, 'rgba(255,255,255,0.95)');
+    core.addColorStop(1, 'rgba(255,255,255,0)');
+    ctxC.fillStyle = core; ctxC.beginPath(); ctxC.arc(0, 0, isl.r * 0.12, 0, Math.PI * 2); ctxC.fill();
+  }
+  function drawGalaxy(isl) {
+    if (!isl._gal) initGalaxy(isl);
+    galaxyBeginTransform(isl);
+    if (GALAXY_STYLE === 'spiral') drawGalaxySpiral(isl, isl._gal);
+    else if (GALAXY_STYLE === 'structured') drawGalaxyStructured(isl, isl._gal);
+    else drawGalaxyNebula(isl, isl._gal);
+    ctxC.restore();
+  }
+  function drawGalaxies() { islands.forEach(drawGalaxy); }
+  var dragIsl = null, islMoved = 0;
+  function hitIsland(px, py) {
+    for (var i = islands.length - 1; i >= 0; i--) {
+      var isl = islands[i], dx = px - isl.x, dy = py - isl.y;
+      if (dx * dx + dy * dy > isl.cut2) continue;
+      var lp = islandLocalPolar(isl, px, py);
+      if (lp.dist < islandRadiusAt(isl, lp.theta)) return isl;
+    }
+    return null;
+  }
+  function onIslDownC(e) {
+    islMoved = 0;
+    var hit = hitIsland(e.clientX, e.clientY);
+    if (hit) { dragIsl = hit; dragIsl.vx = 0; dragIsl.vy = 0; }
+  }
+  function onIslMoveC(e) {
+    if (!dragIsl) return;
+    var maxV = 16;
+    var nx = e.clientX, ny = e.clientY;
+    islMoved += Math.abs(nx - dragIsl.x) + Math.abs(ny - dragIsl.y);
+    dragIsl.vx = Math.max(-maxV, Math.min(maxV, (nx - dragIsl.x) * 0.5));
+    dragIsl.vy = Math.max(-maxV, Math.min(maxV, (ny - dragIsl.y) * 0.5));
+    dragIsl.x = nx; dragIsl.y = ny;
+  }
+  function onIslUpC() { dragIsl = null; }
+  function stepIslands() {
+    islands.forEach(function (isl) {
+      if (isl === dragIsl) return;
+      var hx = isl.fx * canvasC.width, hy = isl.fy * canvasC.height;
+      var dhx = hx - isl.x, dhy = hy - isl.y, hdist = Math.sqrt(dhx * dhx + dhy * dhy);
+      if (hdist > 4) { isl.vx += dhx * 0.0015; isl.vy += dhy * 0.0015; }
+      isl.vx *= 0.94; isl.vy *= 0.94;
+      if (hdist <= 4 && Math.abs(isl.vx) < 0.01 && Math.abs(isl.vy) < 0.01) { isl.vx = 0; isl.vy = 0; isl.x = hx; isl.y = hy; return; }
+      isl.x += isl.vx; isl.y += isl.vy;
+      var lim = isl.r * 0.4;
+      if (isl.x < -lim) { isl.x = -lim; isl.vx *= -0.4; }
+      if (isl.x > canvasC.width + lim) { isl.x = canvasC.width + lim; isl.vx *= -0.4; }
+      if (isl.y < -lim) { isl.y = -lim; isl.vy *= -0.4; }
+      if (isl.y > canvasC.height + lim) { isl.y = canvasC.height + lim; isl.vy *= -0.4; }
+    });
+  }
+  function drawContours() {
+    if (!ripples.length) return;
+    var cutoff = Math.sqrt(RIPPLE_CUTOFF2), steps = 48;
+    ctxC.lineCap = 'round';
+    for (var li = 0; li < LEVELS.length; li++) {
+      var level = LEVELS[li], any = false;
+      ctxC.beginPath();
+      for (var ri = 0; ri < ripples.length; ri++) {
+        var r = ripples[ri];
+        var prevD = 0, prevH = rippleAmplitude(r, 0);
+        for (var i = 1; i <= steps; i++) {
+          var d = cutoff * i / steps, h = rippleAmplitude(r, d);
+          if ((prevH - level) * (h - level) < 0) {
+            var lo = prevD, hi = d, lh = prevH;
+            for (var b = 0; b < 6; b++) {
+              var mid = (lo + hi) / 2, mh = rippleAmplitude(r, mid);
+              if ((lh - level) * (mh - level) <= 0) hi = mid;
+              else { lo = mid; lh = mh; }
+            }
+            var radius = (lo + hi) / 2;
+            if (radius > 1) { ctxC.moveTo(r.x + radius, r.y); ctxC.arc(r.x, r.y, radius, 0, Math.PI * 2); any = true; }
+          }
+          prevD = d; prevH = h;
+        }
+      }
+      if (any) {
+        ctxC.strokeStyle = 'rgba(255,255,255,' + (0.22 + li * 0.028) + ')';
+        ctxC.lineWidth = 1.2;
+        ctxC.stroke();
+      }
+    }
+  }
+  function drawCrosshairs() {
+    ctxC.lineWidth = 1;
+    crossPts.forEach(function (p) {
+      if (HERO_ZONE) {
+        var edx = (p.x - HERO_ZONE.cx) / HERO_ZONE.rx, edy = (p.y - HERO_ZONE.cy) / HERO_ZONE.ry;
+        if (edx * edx + edy * edy < 1) return;
+      }
+      var tw = 0.55 + 0.45 * Math.sin(tC * 0.045 + p.ph);
+      ctxC.strokeStyle = 'rgba(255,255,255,' + (0.35 + 0.6 * tw) + ')';
+      ctxC.beginPath();
+      ctxC.moveTo(p.x - p.r, p.y); ctxC.lineTo(p.x + p.r, p.y);
+      ctxC.moveTo(p.x, p.y - p.r); ctxC.lineTo(p.x, p.y + p.r);
+      ctxC.stroke();
+    });
+  }
+  function drawTideFrame() {
+    tC++;
+    ctxC.fillStyle = '#000'; ctxC.fillRect(0, 0, canvasC.width, canvasC.height);
+    stepIslands();
+    drawContours();
+    drawCrosshairs();
+    stepFoods(); drawFoods();
+    stepFish(); drawShark();
+    stepEggFish(); drawEggFish();
+    for (var k = ripples.length - 1; k >= 0; k--) { ripples[k].t++; if (ripples[k].t > 90) ripples.splice(k, 1); }
+  }
+  var fpsElC = document.getElementById('fpsC'), fpsLastT = 0, fpsSmooth = 60;
+  function loopC(now) {
+    if (typeof now !== 'number') now = performance.now();
+    frameToggleC = !frameToggleC;
+    if (frameToggleC) {
+      drawTideFrame();
+      if (fpsLastT) {
+        var dt = now - fpsLastT;
+        var inst = 1000 / Math.max(dt, 1);
+        fpsSmooth += (inst - fpsSmooth) * 0.1;
+        if (fpsElC) fpsElC.textContent = Math.round(fpsSmooth) + ' fps';
+      }
+      fpsLastT = now;
+    }
+    loops.c = requestAnimationFrame(loopC);
+  }
+  var frameToggleC = false;
+  function onClickC(e) {
+    if (e.target.closest('a, button')) return;
+    if (islMoved > 6) { islMoved = 0; return; }
+    spawnFood(e.clientX, e.clientY); spawnRipple(e.clientX, e.clientY, 1.4); if (reduced) drawTideFrame();
+  }
+  function onFishLogoClick(e) { e.stopPropagation(); spawnEggFish(); if (reduced) drawTideFrame(); }
+  var resizeC = function () { sizeC(); };
+  var fishLogoC = document.getElementById('fishLogoC');
+
+  /* ---------- project info modal ---------- */
+  var PROJECTS_C = {
+    grab: { name: 'Grab', tag: 'AGPL-3.0 · downloader', c: '#2dd4bf', href: 'https://grab.fysh.site', desc: 'Pulls video off YouTube and friends and hands you a clean file, no ads or tracking. Runs on my own hardware, AGPL-3.0.' },
+    ehw: { name: 'Event Horizon Web', tag: 'AGPL-3.0 · event monitor', c: '#f5a524', href: 'https://event-horizon.fysh.site', desc: "Watches for events worth knowing about and surfaces them before you'd have found them yourself. Still rough at the edges. AGPL-3.0." },
+    rr: { name: 'Red Rocket', tag: 'AGPL-3.0 · android', c: '#ef4444', href: 'https://github.com/Fysh-ball/RedRocket', desc: 'An Android app, open source under AGPL-3.0. Source and releases live on GitHub.' },
+    wg: { name: 'Warp Gate', tag: 'AGPL-3.0 · file transfer', c: '#8b5cf6', href: 'https://warpgate.fysh.site', desc: "Send files between your own devices without routing them through someone else's cloud. AGPL-3.0, self-hosted." }
   };
-  window.showLanding = function(){
-    history.pushState(null,null,' ');
-    route();
-    // Scroll snap container to top
-    var sc = document.querySelector('.snap-container');
-    if(sc) sc.scrollTo(0,0);
+  var pmEl = document.getElementById('projectModal'), pmDot = document.getElementById('pmDot'),
+    pmName = document.getElementById('pmName'), pmTag = document.getElementById('pmTag'),
+    pmDesc = document.getElementById('pmDesc'), pmVisit = document.getElementById('pmVisit'),
+    pmClose = document.getElementById('pmClose'), pmBackdrop = document.getElementById('pmBackdrop'),
+    chipListC = document.getElementById('chipListC');
+  function openProjectModal(key) {
+    var p = PROJECTS_C[key];
+    if (!p || !pmEl) return;
+    pmEl.style.setProperty('--c', p.c);
+    pmDot.style.background = p.c;
+    pmName.textContent = p.name;
+    pmTag.textContent = p.tag;
+    pmDesc.textContent = p.desc;
+    pmVisit.href = p.href;
+    pmEl.classList.add('open');
+  }
+  function closeProjectModal() { if (pmEl) pmEl.classList.remove('open'); }
+  function onChipClickC(e) {
+    var btn = e.target.closest('.chip');
+    if (!btn) return;
+    openProjectModal(btn.getAttribute('data-key'));
+  }
+
+  /* ---------- crypto address modal ---------- */
+  var COINS_C = {
+    xmr: { name: 'Monero', c: '#f26822', addr: '8Ahxk91aBHfCgLmqUji5NQXVHg9Y6pAj1EpdnsZvm5Nf4M4D9Uam6hr4FXZoBhNuZoKMH9V31pYZF6fkyf4pvK6q4pCmynj' },
+    btc: { name: 'Bitcoin', c: '#f7931a', addr: 'bc1qkgq5xpue5se32xu53s4nuvn866u4xgpl0xs27t' }
   };
+  var cmEl = document.getElementById('cryptoModal'), cmDot = document.getElementById('cmDot'),
+    cmName = document.getElementById('cmName'), cmAddr = document.getElementById('cmAddr'),
+    cmCopy = document.getElementById('cmCopy'), cmClose = document.getElementById('cmClose'),
+    cmBackdrop = document.getElementById('cmBackdrop'), chipMonero = document.getElementById('chipMonero'),
+    chipBitcoin = document.getElementById('chipBitcoin'), cmCopyResetT = null,
+    cmQrWrap = document.getElementById('cmQrWrap'), cmQrCanvas = document.getElementById('cmQrCanvas'),
+    cmQrToggle = document.getElementById('cmQrToggle'), cmQrDrawnFor = null;
+  function openCryptoModal(key) {
+    var c = COINS_C[key];
+    if (!c || !cmEl) return;
+    cmEl.style.setProperty('--c', c.c);
+    cmDot.style.background = c.c;
+    cmName.textContent = c.name;
+    cmAddr.textContent = c.addr;
+    cmAddr.dataset.key = key;
+    cmCopy.textContent = 'Copy address';
+    cmCopy.classList.remove('copied');
+    if (cmQrWrap) cmQrWrap.setAttribute('hidden', '');
+    if (cmQrToggle) cmQrToggle.textContent = 'Show QR';
+    cmEl.classList.add('open');
+  }
+  function closeCryptoModal() { if (cmEl) cmEl.classList.remove('open'); }
+  function onCoinCopyClick() {
+    if (!navigator.clipboard) return;
+    var text = cmAddr.textContent;
+    navigator.clipboard.writeText(text).then(function () {
+      cmCopy.textContent = 'Copied'; cmCopy.classList.add('copied');
+      if (cmCopyResetT) clearTimeout(cmCopyResetT);
+      cmCopyResetT = setTimeout(function () { cmCopy.textContent = 'Copy address'; cmCopy.classList.remove('copied'); }, 1800);
+    }, function (err) { cmCopy.textContent = 'Copy failed: ' + err.message; });
+  }
+  function renderCoinQr(text) {
+    var qr = qrcode(0, 'M');
+    qr.addData(text);
+    qr.make();
+    var count = qr.getModuleCount(), cell = 5, margin = 4;
+    var size = (count + margin * 2) * cell;
+    cmQrCanvas.width = size; cmQrCanvas.height = size;
+    var qctx = cmQrCanvas.getContext('2d');
+    qctx.fillStyle = '#fff';
+    qctx.fillRect(0, 0, size, size);
+    qctx.fillStyle = '#0c0c11';
+    for (var r = 0; r < count; r++) {
+      for (var c2 = 0; c2 < count; c2++) {
+        if (qr.isDark(r, c2)) qctx.fillRect((c2 + margin) * cell, (r + margin) * cell, cell, cell);
+      }
+    }
+  }
+  function onQrToggleClick() {
+    if (!cmQrWrap) return;
+    var isHidden = cmQrWrap.hasAttribute('hidden');
+    if (isHidden) {
+      var key = cmAddr.dataset.key;
+      if (cmQrDrawnFor !== key) { renderCoinQr(cmAddr.textContent); cmQrDrawnFor = key; }
+      cmQrWrap.removeAttribute('hidden');
+      cmQrToggle.textContent = 'Hide QR';
+    } else {
+      cmQrWrap.setAttribute('hidden', '');
+      cmQrToggle.textContent = 'Show QR';
+    }
+  }
+  function onModalKeyC(e) { if (e.key === 'Escape') { closeProjectModal(); closeCryptoModal(); } }
+  function onCoinMoneroClick() { openCryptoModal('xmr'); }
+  function onCoinBitcoinClick() { openCryptoModal('btc'); }
+  function startTidelineC() {
+    if (loops.c) return;
+    sizeC();
+    window.addEventListener('resize', resizeC);
+    window.addEventListener('click', onClickC);
+    window.addEventListener('keydown', onModalKeyC);
+    canvasC.addEventListener('mousedown', onIslDownC);
+    window.addEventListener('mousemove', onIslMoveC);
+    window.addEventListener('mouseup', onIslUpC);
+    if (fishLogoC) fishLogoC.addEventListener('click', onFishLogoClick);
+    if (chipListC) chipListC.addEventListener('click', onChipClickC);
+    if (pmClose) pmClose.addEventListener('click', closeProjectModal);
+    if (pmBackdrop) pmBackdrop.addEventListener('click', closeProjectModal);
+    if (chipMonero) chipMonero.addEventListener('click', onCoinMoneroClick);
+    if (chipBitcoin) chipBitcoin.addEventListener('click', onCoinBitcoinClick);
+    if (cmCopy) cmCopy.addEventListener('click', onCoinCopyClick);
+    if (cmQrToggle) cmQrToggle.addEventListener('click', onQrToggleClick);
+    if (cmClose) cmClose.addEventListener('click', closeCryptoModal);
+    if (cmBackdrop) cmBackdrop.addEventListener('click', closeCryptoModal);
+    if (reduced) { drawTideFrame(); } else { loopC(); }
+  }
+  function stopTidelineC() {
+    if (loops.c) { cancelAnimationFrame(loops.c); loops.c = null; }
+    window.removeEventListener('resize', resizeC);
+    window.removeEventListener('click', onClickC);
+    window.removeEventListener('keydown', onModalKeyC);
+    canvasC.removeEventListener('mousedown', onIslDownC);
+    window.removeEventListener('mousemove', onIslMoveC);
+    window.removeEventListener('mouseup', onIslUpC);
+    if (fishLogoC) fishLogoC.removeEventListener('click', onFishLogoClick);
+    if (chipListC) chipListC.removeEventListener('click', onChipClickC);
+    if (pmClose) pmClose.removeEventListener('click', closeProjectModal);
+    if (pmBackdrop) pmBackdrop.removeEventListener('click', closeProjectModal);
+    if (chipMonero) chipMonero.removeEventListener('click', onCoinMoneroClick);
+    if (chipBitcoin) chipBitcoin.removeEventListener('click', onCoinBitcoinClick);
+    if (cmCopy) cmCopy.removeEventListener('click', onCoinCopyClick);
+    if (cmQrToggle) cmQrToggle.removeEventListener('click', onQrToggleClick);
+    if (cmClose) cmClose.removeEventListener('click', closeCryptoModal);
+    if (cmBackdrop) cmBackdrop.removeEventListener('click', closeCryptoModal);
+    dragIsl = null;
+    closeProjectModal();
+    closeCryptoModal();
+    if (cmCopyResetT) { clearTimeout(cmCopyResetT); cmCopyResetT = null; }
+    fpsLastT = 0;
+    if (fpsElC) fpsElC.textContent = '';
+  }
 
-  window.addEventListener('popstate', route);
-  window.addEventListener('hashchange', route);
-
-  // Init
-  route();
-  initObserver();
+  startTidelineC();
 })();
 </script>
-
 </body>
 </html>
