@@ -2604,14 +2604,11 @@ var qrcode = function() {
     }
     var borderHit = borderAvoid();
     if (borderHit) { sumDelta += borderHit.delta * borderHit.weight; sumWeight += borderHit.weight; maxWeight = Math.max(maxWeight, borderHit.weight); }
-    var hardWeight = sumWeight;
+    var avoidWeight = Math.min(1, maxWeight);
+    var avoidDelta = sumWeight > 0 ? sumDelta / sumWeight : 0;
     var heroHit = heroAvoid();
     var mouthX = shark.x + Math.cos(shark.angle) * 45, mouthY = shark.y + Math.sin(shark.angle) * 45;
-    if (hardWeight > 0) {
-      if (heroHit) { sumDelta += heroHit.delta * heroHit.weight; sumWeight += heroHit.weight; maxWeight = Math.max(maxWeight, heroHit.weight); }
-      desiredAngle = shark.angle + sumDelta / sumWeight;
-      turnRate = 0.05 + maxWeight * 0.16;
-    } else if (foods.length) {
+    if (foods.length) {
       if (!shark.target || foods.indexOf(shark.target) === -1) {
         var nearest = foods[0], best = Infinity;
         for (var k = 0; k < foods.length; k++) {
@@ -2622,11 +2619,19 @@ var qrcode = function() {
       }
       var target = shark.target;
       var td = (target.x - shark.x) * (target.x - shark.x) + (target.y - shark.y) * (target.y - shark.y);
-      desiredAngle = Math.atan2(target.y - shark.y, target.x - shark.x);
-      turnRate = td < 3600 ? 0.16 : 0.07;
+      var chaseDelta = angleDiff(Math.atan2(target.y - shark.y, target.x - shark.x), shark.angle);
+      /* blend chase toward avoid continuously so passing near an obstacle
+         curves the path instead of snapping between two exclusive modes,
+         which is what produced the juke/oscillation near a margin edge */
+      desiredAngle = shark.angle + avoidDelta * avoidWeight + chaseDelta * (1 - avoidWeight);
+      turnRate = Math.min(0.28, 0.05 + avoidWeight * 0.16 + (td < 3600 ? 0.11 : 0.02));
       targetSpeed = 3.2;
       var dmx = target.x - mouthX, dmy = target.y - mouthY;
       if (dmx * dmx + dmy * dmy < 900) { foods.splice(foods.indexOf(target), 1); spawnRipple(target.x, target.y, 0.9); shark.target = null; }
+    } else if (avoidWeight > 0) {
+      if (heroHit) { sumDelta += heroHit.delta * heroHit.weight; sumWeight += heroHit.weight; maxWeight = Math.max(maxWeight, heroHit.weight); }
+      desiredAngle = shark.angle + sumDelta / sumWeight;
+      turnRate = 0.05 + maxWeight * 0.16;
     } else if (heroHit) {
       desiredAngle = shark.angle + heroHit.delta;
       turnRate = 0.05 + heroHit.weight * 0.16;
