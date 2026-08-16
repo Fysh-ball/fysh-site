@@ -51,7 +51,7 @@
   .vC .chip {
     font-family: ui-monospace, monospace; font-size: 12.5px; padding: 10px 16px; border-radius: 999px;
     border: 1px solid #262630; background: rgba(0,0,0,.55); color: #d6d6de; display: inline-flex; align-items: center; gap: 8px;
-    cursor: pointer; pointer-events: auto;
+    cursor: pointer; pointer-events: auto; text-decoration: none;
   }
   .vC .chip:hover { border-color: var(--c); color: #fff; }
   .vC .chip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c); }
@@ -93,6 +93,73 @@
     .vC .iconsBelow { padding: 0 16px 70px; }
   }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://fysh.site/#org",
+      "name": "Fysh",
+      "url": "https://fysh.site/",
+      "logo": "https://fysh.site/fysh-og.png",
+      "description": "Fysh builds small, focused open-source tools, all AGPL-3.0.",
+      "sameAs": ["https://github.com/Fysh-ball", "https://ko-fi.com/fysh_yum"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://fysh.site/#site",
+      "url": "https://fysh.site/",
+      "name": "Fysh",
+      "publisher": { "@id": "https://fysh.site/#org" }
+    },
+    {
+      "@type": "ItemList",
+      "name": "Fysh tools",
+      "itemListOrder": "https://schema.org/ItemListUnordered",
+      "numberOfItems": 4,
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "item": {
+          "@type": "SoftwareApplication", "name": "Grab",
+          "url": "https://grab.fysh.site",
+          "applicationCategory": "MultimediaApplication",
+          "operatingSystem": "Web browser",
+          "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+          "isAccessibleForFree": true,
+          "description": "Pulls video off YouTube and friends and hands you a clean file, no ads or tracking. Runs on my own hardware.",
+          "publisher": { "@id": "https://fysh.site/#org" } } },
+        { "@type": "ListItem", "position": 2, "item": {
+          "@type": "SoftwareApplication", "name": "Event Horizon Web",
+          "url": "https://event-horizon.fysh.site",
+          "applicationCategory": "BrowserApplication",
+          "operatingSystem": "Web browser",
+          "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+          "isAccessibleForFree": true,
+          "description": "Live global map of earthquakes, storms, wildfires, conflicts and space weather, drawn from USGS, NOAA, NASA FIRMS and GDACS.",
+          "publisher": { "@id": "https://fysh.site/#org" } } },
+        { "@type": "ListItem", "position": 3, "item": {
+          "@type": "MobileApplication", "name": "Red Rocket",
+          "url": "https://github.com/Fysh-ball/RedRocket",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "Android",
+          "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+          "isAccessibleForFree": true,
+          "description": "Watches for emergency alerts on your Android phone, and when one matches a scenario you set up, texts the people you picked and tracks who answers. No accounts, no servers.",
+          "publisher": { "@id": "https://fysh.site/#org" } } },
+        { "@type": "ListItem", "position": 4, "item": {
+          "@type": "SoftwareApplication", "name": "Warp Gate",
+          "url": "https://warpgate.fysh.site",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "Web browser",
+          "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+          "isAccessibleForFree": true,
+          "description": "A temporary end-to-end encrypted bridge between two browsers. Send files between your own devices without routing them through someone else's cloud.",
+          "publisher": { "@id": "https://fysh.site/#org" } } }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <main id="view-c" class="vC">
@@ -106,10 +173,10 @@
     <p>An ocean of possibilities.</p>
   </div>
   <div class="list" id="chipListC">
-    <button type="button" class="chip" data-key="grab" style="--c:#2dd4bf"><span class="dot"></span>Grab</button>
-    <button type="button" class="chip" data-key="ehw" style="--c:#f5a524"><span class="dot"></span>Event Horizon Web</button>
-    <button type="button" class="chip" data-key="rr" style="--c:#ef4444"><span class="dot"></span>Red Rocket</button>
-    <button type="button" class="chip" data-key="wg" style="--c:#8b5cf6"><span class="dot"></span>Warp Gate</button>
+    <a class="chip" href="https://grab.fysh.site" data-key="grab" style="--c:#2dd4bf"><span class="dot"></span>Grab</a>
+    <a class="chip" href="https://event-horizon.fysh.site" data-key="ehw" style="--c:#f5a524"><span class="dot"></span>Event Horizon Web</a>
+    <a class="chip" href="https://github.com/Fysh-ball/RedRocket" data-key="rr" style="--c:#ef4444"><span class="dot"></span>Red Rocket</a>
+    <a class="chip" href="https://warpgate.fysh.site" data-key="wg" style="--c:#8b5cf6"><span class="dot"></span>Warp Gate</a>
   </div>
   <div class="list iconsBelow">
     <a class="chip" href="https://ko-fi.com/fysh_yum" style="--c:#ff5e5b"><span class="chipIcon"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 5.5h9v3.2a3.6 3.6 0 0 1-3.6 3.6H6.1a3.6 3.6 0 0 1-3.6-3.6V5.5z" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M11.5 6.3h1a1.7 1.7 0 0 1 0 3.4h-1" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M2 12.8h10" stroke="currentColor" stroke-width="1.2"/></svg></span>Ko-fi</a>
@@ -3176,7 +3243,10 @@ var qrcode = function() {
   function onChipClickC(e) {
     var btn = e.target.closest('.chip');
     if (!btn) return;
-    openProjectModal(btn.getAttribute('data-key'));
+    var key = btn.getAttribute('data-key');
+    if (!key || !PROJECTS_C[key]) return;
+    e.preventDefault();
+    openProjectModal(key);
   }
 
   /* ---------- crypto address modal ---------- */
