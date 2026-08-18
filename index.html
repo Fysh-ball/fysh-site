@@ -22,6 +22,9 @@
   :root { color-scheme: dark; }
   html, body { margin: 0; padding: 0; background: #000; overflow: hidden; height: 100%; }
   * { box-sizing: border-box; }
+  /* the UA rule for [hidden] is a plain display:none, so any author display
+     declaration on the same element outranks it and the element stays on screen */
+  [hidden] { display: none !important; }
   a { text-decoration: none; color: inherit; }
   ul { margin: 0; padding: 0; list-style: none; }
   body {
