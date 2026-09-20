@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fysh — An ocean of possibilities</title>
-<meta name="description" content="Fysh builds small, focused open-source tools: Grab (AGPL-3.0 downloader), Event Horizon Web (AGPL-3.0 event monitor), Red Rocket (AGPL-3.0 Android app), and Warp Gate (AGPL-3.0 file transfer).">
+<meta name="description" content="Fysh builds small, focused open-source tools: Event Horizon Web (AGPL-3.0 event monitor), Red Rocket (AGPL-3.0 Android app), and Warp Gate (AGPL-3.0 file transfer).">
 <link rel="canonical" href="https://fysh.site/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://fysh.site/">
 <meta property="og:site_name" content="Fysh">
 <meta property="og:title" content="Fysh — An ocean of possibilities">
-<meta property="og:description" content="Fysh builds small, focused open-source tools: Grab, Event Horizon Web, Red Rocket, and Warp Gate.">
+<meta property="og:description" content="Fysh builds small, focused open-source tools: Event Horizon Web, Red Rocket, and Warp Gate.">
 <meta property="og:image" content="https://fysh.site/fysh-og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Fysh — An ocean of possibilities">
-<meta name="twitter:description" content="Fysh builds small, focused open-source tools: Grab, Event Horizon Web, Red Rocket, and Warp Gate.">
+<meta name="twitter:description" content="Fysh builds small, focused open-source tools: Event Horizon Web, Red Rocket, and Warp Gate.">
 <meta name="twitter:image" content="https://fysh.site/fysh-og.png">
 <style>
   :root { color-scheme: dark; }
@@ -120,18 +120,9 @@
       "@type": "ItemList",
       "name": "Fysh tools",
       "itemListOrder": "https://schema.org/ItemListUnordered",
-      "numberOfItems": 4,
+      "numberOfItems": 3,
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "item": {
-          "@type": "SoftwareApplication", "name": "Grab",
-          "url": "https://grab.fysh.site",
-          "applicationCategory": "MultimediaApplication",
-          "operatingSystem": "Web browser",
-          "license": "https://www.gnu.org/licenses/agpl-3.0.html",
-          "isAccessibleForFree": true,
-          "description": "Pulls video off YouTube and friends and hands you a clean file, no ads or tracking. Runs on my own hardware.",
-          "publisher": { "@id": "https://fysh.site/#org" } } },
-        { "@type": "ListItem", "position": 2, "item": {
           "@type": "SoftwareApplication", "name": "Event Horizon Web",
           "url": "https://event-horizon.fysh.site",
           "applicationCategory": "BrowserApplication",
@@ -140,7 +131,7 @@
           "isAccessibleForFree": true,
           "description": "Live global map of earthquakes, storms, wildfires, conflicts and space weather, drawn from USGS, NOAA, NASA FIRMS and GDACS.",
           "publisher": { "@id": "https://fysh.site/#org" } } },
-        { "@type": "ListItem", "position": 3, "item": {
+        { "@type": "ListItem", "position": 2, "item": {
           "@type": "MobileApplication", "name": "Red Rocket",
           "url": "https://redrocket.fysh.site",
           "applicationCategory": "UtilitiesApplication",
@@ -149,7 +140,7 @@
           "isAccessibleForFree": true,
           "description": "Watches for emergency alerts on your Android phone, and when one matches a scenario you set up, texts the people you picked and tracks who answers. No accounts, no servers.",
           "publisher": { "@id": "https://fysh.site/#org" } } },
-        { "@type": "ListItem", "position": 4, "item": {
+        { "@type": "ListItem", "position": 3, "item": {
           "@type": "SoftwareApplication", "name": "Warp Gate",
           "url": "https://warpgate.fysh.site",
           "applicationCategory": "UtilitiesApplication",
@@ -179,7 +170,6 @@
     <p>An ocean of possibilities.</p>
   </div>
   <div class="list" id="chipListC">
-    <a class="chip" href="https://grab.fysh.site" data-key="grab" style="--c:#2dd4bf"><span class="dot"></span>Grab</a>
     <a class="chip" href="https://event-horizon.fysh.site" data-key="ehw" style="--c:#f5a524"><span class="dot"></span>Event Horizon Web</a>
     <a class="chip" href="https://redrocket.fysh.site" data-key="rr" style="--c:#ef4444"><span class="dot"></span>Red Rocket</a>
     <a class="chip" href="https://warpgate.fysh.site" data-key="wg" style="--c:#8b5cf6"><span class="dot"></span>Warp Gate</a>
@@ -3224,7 +3214,6 @@ var qrcode = function() {
 
   /* ---------- project info modal ---------- */
   var PROJECTS_C = {
-    grab: { name: 'Grab', tag: 'AGPL-3.0 · downloader', c: '#2dd4bf', href: 'https://grab.fysh.site', desc: 'Pulls video off YouTube and friends and hands you a clean file, no ads or tracking. Runs on my own hardware, AGPL-3.0.' },
     ehw: { name: 'Event Horizon Web', tag: 'AGPL-3.0 · event monitor', c: '#f5a524', href: 'https://event-horizon.fysh.site', desc: "Watches for events worth knowing about and surfaces them before you'd have found them yourself. Still rough at the edges. AGPL-3.0." },
     rr: { name: 'Red Rocket', tag: 'AGPL-3.0 · android', c: '#ef4444', href: 'https://redrocket.fysh.site', desc: 'An Android app, open source under AGPL-3.0. Download it at redrocket.fysh.site; source and releases live on GitHub.' },
     wg: { name: 'Warp Gate', tag: 'AGPL-3.0 · file transfer', c: '#8b5cf6', href: 'https://warpgate.fysh.site', desc: "Send files between your own devices without routing them through someone else's cloud. AGPL-3.0, self-hosted." }
