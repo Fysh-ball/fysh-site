@@ -1,10 +1,10 @@
 {
-  "versionCode": 4,
-  "versionName": "1.1.0",
-  "notes": "Double-tap to like messages, one-tap app updates, matching text size in chats",
-  "sha256": "e108f9fae24215546c21ff9d398f3be0b353252e4ecc8b20ffd37b8f8df8abc1",
+  "versionCode": 5,
+  "versionName": "1.2.0",
+  "notes": "Replies (hold a message), Notes at the top of chats with songs you can play",
+  "sha256": "2640a136bcc7cde7ab5379a0f9f68751741dc02c0aa6e1f2f5c1328c8b9fa8bd",
   "apk": [
     "https://fysh.site/otg/on-the-go.apk",
-    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.1.0/on-the-go-1.1.0.apk"
+    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.2.0/on-the-go-1.2.0.apk"
   ]
 }
