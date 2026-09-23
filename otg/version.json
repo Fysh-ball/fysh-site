@@ -1,10 +1,10 @@
 {
-  "versionCode": 6,
-  "versionName": "1.3.0",
-  "notes": "Reels: tap to mute, hold to pause, progress line. Chats: swipe right to reply, joined bubbles, faster reopen. Notes: tap to read in full and hear the song.",
-  "sha256": "b2b5a346e5ebe93db620b2f0e2c37d41d8c5d37eb0cc16a91e66e2bb70d9f868",
+  "versionCode": 7,
+  "versionName": "1.3.1",
+  "notes": "Settings: the GitHub link now opens On The Go's page.",
+  "sha256": "d566c2d68d1fe553ecfa31a8f7a09a01ac1355e8930a2ed7ec7576f391098692",
   "apk": [
     "https://fysh.site/otg/on-the-go.apk",
-    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.3.0/on-the-go-1.3.0.apk"
+    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.3.1/on-the-go-1.3.1.apk"
   ]
 }
