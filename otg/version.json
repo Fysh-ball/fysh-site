@@ -1,10 +1,10 @@
 {
-  "versionCode": 5,
-  "versionName": "1.2.0",
-  "notes": "Replies (hold a message), Notes at the top of chats with songs you can play",
-  "sha256": "2640a136bcc7cde7ab5379a0f9f68751741dc02c0aa6e1f2f5c1328c8b9fa8bd",
+  "versionCode": 6,
+  "versionName": "1.3.0",
+  "notes": "Reels: tap to mute, hold to pause, progress line. Chats: swipe right to reply, joined bubbles, faster reopen. Notes: tap to read in full and hear the song.",
+  "sha256": "b2b5a346e5ebe93db620b2f0e2c37d41d8c5d37eb0cc16a91e66e2bb70d9f868",
   "apk": [
     "https://fysh.site/otg/on-the-go.apk",
-    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.2.0/on-the-go-1.2.0.apk"
+    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.3.0/on-the-go-1.3.0.apk"
   ]
 }
