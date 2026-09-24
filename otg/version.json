@@ -1,10 +1,10 @@
 {
-  "versionCode": 9,
-  "versionName": "1.4.1",
-  "notes": "Share photos into chats, profile grids that failed now load, Offline tag only when offline, covers while reels load, saved stand-ins when scrolling fast, bookmarks shown last, faster opening, quicker pictures and stories",
-  "sha256": "1f8a30c68458fa7e27a356b23a676a3780bb139b0fb43d2bac0314922a090b1a",
+  "versionCode": 10,
+  "versionName": "1.4.2",
+  "notes": "Safer with Instagram: the app now asks for much less and stops for an hour or more whenever Instagram says no. New Fill speed setting (Slow by default). No background activity overnight. Refresh and reopening Posts now skip posts you've already read. The tank shows how full it really is, and never fills past 5 GB of free space. Faster start.",
+  "sha256": "28c0a2fdff7a5bd0ba034e46f9e6737fb29f1b0261120f14f2ede53e23b552b8",
   "apk": [
     "https://fysh.site/otg/on-the-go.apk",
-    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.1/on-the-go-1.4.1.apk"
+    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.2/on-the-go-1.4.2.apk"
   ]
 }
