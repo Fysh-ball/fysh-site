@@ -1,10 +1,10 @@
 {
-  "versionCode": 11,
-  "versionName": "1.4.3",
-  "notes": "Full tank is still water and bubbles, shared posts show in chats, older messages load as you scroll up, reels refresh skips what you've seen, one mix slider in 5% steps, tap the app name for updates and donations.",
-  "sha256": "206f49290e6efbbbb0c3e88b6b0628f115a636f0973bdd53007a02604c2f5764",
+  "versionCode": 12,
+  "versionName": "1.4.4",
+  "notes": "Hold the send button for quick-send faces. Hold a message to react, forward or unsend.",
+  "sha256": "74d6834bef8d589033cba4242f1f5f72eb27d52f31d332708f98fb2ea60925a6",
   "apk": [
     "https://fysh.site/otg/on-the-go.apk",
-    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.3/on-the-go-1.4.3.apk"
+    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.4/on-the-go-1.4.4.apk"
   ]
 }
