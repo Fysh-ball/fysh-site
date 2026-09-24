@@ -1,10 +1,10 @@
 {
-  "versionCode": 8,
-  "versionName": "1.4.0",
-  "notes": "Chat themes, nicknames and mute; profiles from names in Posts and Reels; reels open from chats; GIFs play; faster profile loads.",
-  "sha256": "8830e683dc4dd4d9855c756cd6e74f7b15f952e4d3706838f75c061c307c174f",
+  "versionCode": 9,
+  "versionName": "1.4.1",
+  "notes": "Share photos into chats, profile grids that failed now load, Offline tag only when offline, covers while reels load, saved stand-ins when scrolling fast, bookmarks shown last, faster opening, quicker pictures and stories",
+  "sha256": "1f8a30c68458fa7e27a356b23a676a3780bb139b0fb43d2bac0314922a090b1a",
   "apk": [
     "https://fysh.site/otg/on-the-go.apk",
-    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.0/on-the-go-1.4.0.apk"
+    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.1/on-the-go-1.4.1.apk"
   ]
 }
