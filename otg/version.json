@@ -1,10 +1,10 @@
 {
-  "versionCode": 10,
-  "versionName": "1.4.2",
-  "notes": "Safer with Instagram: the app now asks for much less and stops for an hour or more whenever Instagram says no. New Fill speed setting (Slow by default). No background activity overnight. Refresh and reopening Posts now skip posts you've already read. The tank shows how full it really is, and never fills past 5 GB of free space. Faster start.",
-  "sha256": "28c0a2fdff7a5bd0ba034e46f9e6737fb29f1b0261120f14f2ede53e23b552b8",
+  "versionCode": 11,
+  "versionName": "1.4.3",
+  "notes": "Full tank is still water and bubbles, shared posts show in chats, older messages load as you scroll up, reels refresh skips what you've seen, one mix slider in 5% steps, tap the app name for updates and donations.",
+  "sha256": "206f49290e6efbbbb0c3e88b6b0628f115a636f0973bdd53007a02604c2f5764",
   "apk": [
     "https://fysh.site/otg/on-the-go.apk",
-    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.2/on-the-go-1.4.2.apk"
+    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.3/on-the-go-1.4.3.apk"
   ]
 }
