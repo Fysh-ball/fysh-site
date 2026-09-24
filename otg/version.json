@@ -1,10 +1,10 @@
 {
-  "versionCode": 7,
-  "versionName": "1.3.1",
-  "notes": "Settings: the GitHub link now opens On The Go's page.",
-  "sha256": "d566c2d68d1fe553ecfa31a8f7a09a01ac1355e8930a2ed7ec7576f391098692",
+  "versionCode": 8,
+  "versionName": "1.4.0",
+  "notes": "Chat themes, nicknames and mute; profiles from names in Posts and Reels; reels open from chats; GIFs play; faster profile loads.",
+  "sha256": "8830e683dc4dd4d9855c756cd6e74f7b15f952e4d3706838f75c061c307c174f",
   "apk": [
     "https://fysh.site/otg/on-the-go.apk",
-    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.3.1/on-the-go-1.3.1.apk"
+    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.0/on-the-go-1.4.0.apk"
   ]
 }
