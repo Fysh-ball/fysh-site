@@ -1,10 +1,10 @@
 {
-  "versionCode": 12,
-  "versionName": "1.4.4",
-  "notes": "Hold the send button for quick-send faces. Hold a message to react, forward or unsend.",
-  "sha256": "74d6834bef8d589033cba4242f1f5f72eb27d52f31d332708f98fb2ea60925a6",
+  "versionCode": 13,
+  "versionName": "1.4.5",
+  "notes": "Edit messages, remove your reaction, forward photos and videos, your own reactions. YouTube no longer pauses under muted reels. New versions now pop up.",
+  "sha256": "0295974a09c95d3b4cf64798fb09d798ebf4ffe421dc779bad33ced98797db96",
   "apk": [
     "https://fysh.site/otg/on-the-go.apk",
-    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.4/on-the-go-1.4.4.apk"
+    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.5/on-the-go-1.4.5.apk"
   ]
 }
