@@ -1,10 +1,10 @@
 {
-  "versionCode": 14,
-  "versionName": "1.4.6",
-  "notes": "Post photo stories, see pictures and GIFs in chats, and a few surprises.",
-  "sha256": "0ee07ebd84d114d14517b72e23d426e2c8ab91d82479116518458b275925de72",
+  "versionCode": 15,
+  "versionName": "1.4.7",
+  "notes": "Drag the progress line to scrub, double tap comments to like, reel buttons laid out like Instagram.",
+  "sha256": "d7b228a8d06dd802645907574a348a4b9e6a87060d66949e1027cb6239c966d4",
   "apk": [
     "https://fysh.site/otg/on-the-go.apk",
-    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.6/on-the-go-1.4.6.apk"
+    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.7/on-the-go-1.4.7.apk"
   ]
 }
