@@ -1,10 +1,10 @@
 {
-  "versionCode": 13,
-  "versionName": "1.4.5",
-  "notes": "Edit messages, remove your reaction, forward photos and videos, your own reactions. YouTube no longer pauses under muted reels. New versions now pop up.",
-  "sha256": "0295974a09c95d3b4cf64798fb09d798ebf4ffe421dc779bad33ced98797db96",
+  "versionCode": 14,
+  "versionName": "1.4.6",
+  "notes": "Post photo stories, see pictures and GIFs in chats, and a few surprises.",
+  "sha256": "0ee07ebd84d114d14517b72e23d426e2c8ab91d82479116518458b275925de72",
   "apk": [
     "https://fysh.site/otg/on-the-go.apk",
-    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.5/on-the-go-1.4.5.apk"
+    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.6/on-the-go-1.4.6.apk"
   ]
 }
