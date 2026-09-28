@@ -1,10 +1,10 @@
 {
-  "versionCode": 17,
-  "versionName": "1.4.9",
-  "notes": "Saved posts no longer come back as reels you have not seen",
-  "sha256": "7ba903c6ff18900c12920dc77928694a2a272907997105fc1fa37433fc54e83a",
+  "versionCode": 18,
+  "versionName": "1.4.10",
+  "notes": "Posts load about twice as fast: suggested posts are kept",
+  "sha256": "325a81d40f5f9bbcbf1457193544303b3eb4aa70e5c0c0590cdee80c7b3bb69d",
   "apk": [
     "https://fysh.site/otg/on-the-go.apk",
-    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.9/on-the-go-1.4.9.apk"
+    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.10/on-the-go-1.4.10.apk"
   ]
 }
