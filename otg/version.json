@@ -1,10 +1,10 @@
 {
-  "versionCode": 16,
-  "versionName": "1.4.8",
-  "notes": "Reels and posts you've already seen don't come back, and leaving and coming back keeps the reel you were on",
-  "sha256": "760f201ebe1c569eb65c5567d8b755641c478bee5501b4d019a76f21daa05934",
+  "versionCode": 17,
+  "versionName": "1.4.9",
+  "notes": "Saved posts no longer come back as reels you have not seen",
+  "sha256": "7ba903c6ff18900c12920dc77928694a2a272907997105fc1fa37433fc54e83a",
   "apk": [
     "https://fysh.site/otg/on-the-go.apk",
-    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.8/on-the-go-1.4.8.apk"
+    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.9/on-the-go-1.4.9.apk"
   ]
 }
