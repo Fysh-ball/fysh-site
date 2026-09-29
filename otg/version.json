@@ -1,10 +1,10 @@
 {
-  "versionCode": 18,
-  "versionName": "1.4.10",
-  "notes": "Posts load about twice as fast: suggested posts are kept",
-  "sha256": "325a81d40f5f9bbcbf1457193544303b3eb4aa70e5c0c0590cdee80c7b3bb69d",
+  "versionCode": 19,
+  "versionName": "1.4.11",
+  "notes": "Comment likes land on the right comment, and ones you liked on Instagram show as liked",
+  "sha256": "c9cbf4c14e4bf6071a3d30df79282a0f3bbed5ddb9b4c518cd68004edf69c75d",
   "apk": [
     "https://fysh.site/otg/on-the-go.apk",
-    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.10/on-the-go-1.4.10.apk"
+    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.11/on-the-go-1.4.11.apk"
   ]
 }
