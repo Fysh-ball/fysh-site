@@ -1,10 +1,10 @@
 {
-  "versionCode": 20,
-  "versionName": "1.4.12",
-  "notes": "New messages show up within seconds while you're chatting",
-  "sha256": "5624805ec707d0821b3f77f123d5762d7127069b2a276fa995f9957da6b93461",
+  "versionCode": 21,
+  "versionName": "1.4.13",
+  "notes": "Reply quotes show, Post unavailable card, comment faces and full screen GIFs, stories and refresh fixed, story likes and replies, Add to story, pause sign fades",
+  "sha256": "6018b70798a878644e2209df15c394e4b287ab0bd7324fc1fea6acf2ec847c27",
   "apk": [
     "https://fysh.site/otg/on-the-go.apk",
-    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.12/on-the-go-1.4.12.apk"
+    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.13/on-the-go-1.4.13.apk"
   ]
 }
