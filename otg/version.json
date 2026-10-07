@@ -1,10 +1,10 @@
 {
-  "versionCode": 21,
-  "versionName": "1.4.13",
-  "notes": "Reply quotes show, Post unavailable card, comment faces and full screen GIFs, stories and refresh fixed, story likes and replies, Add to story, pause sign fades",
-  "sha256": "6018b70798a878644e2209df15c394e4b287ab0bd7324fc1fea6acf2ec847c27",
+  "versionCode": 22,
+  "versionName": "1.4.14",
+  "notes": "Chat no longer logs the wording of unavailable posts, which can name the sender",
+  "sha256": "70ad6af7f0f2a8b1a9d2e1ea7cf72624e33c14087dc940d830b9ccbbcb7bd92c",
   "apk": [
     "https://fysh.site/otg/on-the-go.apk",
-    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.13/on-the-go-1.4.13.apk"
+    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.14/on-the-go-1.4.14.apk"
   ]
 }
