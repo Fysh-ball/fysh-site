@@ -20,7 +20,7 @@
 <meta name="twitter:image" content="https://fysh.site/fysh-og.png">
 <style>
   :root { color-scheme: dark; }
-  html, body { margin: 0; padding: 0; background: #000; overflow: hidden; height: 100%; }
+  html, body { margin: 0; padding: 0; background: #000; overflow-x: hidden; }
   * { box-sizing: border-box; }
   /* the UA rule for [hidden] is a plain display:none, so any author display
      declaration on the same element outranks it and the element stays on screen */
@@ -50,7 +50,9 @@
   .vC .hero p { font-size: 14.5px; color: #9a9aa6; max-width: 44ch; margin: 0 auto; }
   .vC .list { position: relative; z-index: 5; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; padding: 32px 24px 22px; pointer-events: none; }
   .vC .iconsBelow { padding: 0 24px 100px; }
-  .vC .foot { justify-content: center; position: fixed; left: 0; right: 0; bottom: 0; }
+  .vC .foot { justify-content: center; }
+  .foot a { color: #9a9aa6; pointer-events: auto; }
+  .foot a:hover { color: #fff; }
   .vC .chip {
     font-family: ui-monospace, monospace; font-size: 12.5px; padding: 10px 16px; border-radius: 999px;
     border: 1px solid #262630; background: rgba(0,0,0,.55); color: #d6d6de; display: inline-flex; align-items: center; gap: 8px;
@@ -88,6 +90,21 @@
   .cmBtnRow .pmVisit { width: auto; flex: 1; }
   .cmQrWrap { display: flex; justify-content: center; margin: 0 0 14px; }
   .cmQrWrap canvas { display: block; width: 176px; height: 176px; border-radius: 8px; background: #fff; padding: 12px; }
+  /* the written part below the chips: what each tool is, in text a reader
+     (and a crawler) can see without running the canvas or opening a modal */
+  .info { position: relative; z-index: 5; max-width: 760px; margin: 0 auto; padding: 0 24px 40px; color: #c4c4cc; font-size: 15px; line-height: 1.7; }
+  .info section { background: rgba(4,4,8,.92); border: 1px solid #1c1c24; border-radius: 14px; padding: 24px 26px; margin: 0 0 18px; }
+  .info h2 { font-family: ui-monospace, monospace; font-size: 19px; color: #fff; margin: 0 0 10px; display: flex; align-items: center; gap: 10px; }
+  .info h2 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c, #9ad); box-shadow: 0 0 8px var(--c, #9ad); }
+  .info p { margin: 0 0 12px; }
+  .info ul { margin: 0 0 12px; padding-left: 20px; list-style: disc; }
+  .info li { margin: 0 0 6px; }
+  .info a { color: var(--c, #9ad); text-decoration: underline; text-underline-offset: 3px; }
+  .info a:hover { color: #fff; }
+  @media (max-width: 700px) {
+    .info { padding: 0 16px 32px; font-size: 14.5px; }
+    .info section { padding: 20px 18px; }
+  }
   @media (max-width: 700px) {
     html, body { overflow-y: auto; }
     .vC .hero { padding: 60px 20px 6px; }
@@ -124,7 +141,7 @@
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "item": {
           "@type": "SoftwareApplication", "name": "Event Horizon Web",
-          "url": "https://event-horizon.fysh.site",
+          "url": "https://eventhorizon.fysh.site",
           "applicationCategory": "BrowserApplication",
           "operatingSystem": "Web browser",
           "license": "https://www.gnu.org/licenses/agpl-3.0.html",
@@ -170,7 +187,7 @@
     <p>An ocean of possibilities.</p>
   </div>
   <div class="list" id="chipListC">
-    <a class="chip" href="https://event-horizon.fysh.site" data-key="ehw" style="--c:#f5a524"><span class="dot"></span>Event Horizon Web</a>
+    <a class="chip" href="https://eventhorizon.fysh.site" data-key="ehw" style="--c:#f5a524"><span class="dot"></span>Event Horizon Web</a>
     <a class="chip" href="https://redrocket.fysh.site" data-key="rr" style="--c:#ef4444"><span class="dot"></span>Red Rocket</a>
     <a class="chip" href="https://warpgate.fysh.site" data-key="wg" style="--c:#8b5cf6"><span class="dot"></span>Warp Gate</a>
   </div>
@@ -180,8 +197,52 @@
     <button type="button" class="chip" id="chipBitcoin" style="--c:#f7931a"><span class="chipIcon"><svg viewBox="0 0 16 16" aria-hidden="true"><text x="8" y="8" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700" fill="currentColor">&#8383;</text></svg></span>Bitcoin</button>
     <a class="chip" href="https://github.com/Fysh-ball" style="--c:#e6e6ea"><span class="chipIcon"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></span>GitHub</a>
   </div>
+  <div class="info">
+    <section>
+      <h2>What's here</h2>
+      <p>Fysh is a one-person workshop for small, free tools that do one job properly. Each one exists because I wanted it and couldn't find a version I trusted. They're all open source under the AGPL-3.0, so the code is on <a href="https://github.com/Fysh-ball">GitHub</a> for anyone to read, run or fix.</p>
+      <p>Nothing here needs an account to use. Below is what each tool does, who it's for and where to start.</p>
+    </section>
+
+    <section style="--c:#f5a524">
+      <h2><span class="dot"></span>Event Horizon Web</h2>
+      <p><a href="https://eventhorizon.fysh.site/">Event Horizon Web</a> is a live map of what's going wrong on the planet right now. It pulls earthquakes from USGS, EMSC and GeoNet, severe weather warnings from the US National Weather Service and Environment Canada, hurricane tracks from the National Hurricane Center, wildfire detections from NASA's FIRMS satellites, volcano reports, tsunami warnings, space weather from NOAA's Space Weather Prediction Center, flood alerts from GDACS, and armed conflict data from UCDP and GDELT. Each source is checked every 1 to 60 minutes, and everything lands on one map you can filter by type, severity and time.</p>
+      <p>It's for anyone who'd rather know early: people with family abroad, people who travel, people who live on a fault line or a coast. You can turn on free push alerts for the countries and kinds of event you care about, with quiet hours, and there's nothing to sign up for.</p>
+      <p>Besides the map, it publishes reference pages you can read like a normal website:</p>
+      <ul>
+        <li><a href="https://eventhorizon.fysh.site/faults/">Active fault systems</a>: the world's major faults, how they move, how many large earthquakes each one normally produces, and whether it's busier than usual right now.</li>
+        <li><a href="https://eventhorizon.fysh.site/countries/">Countries</a>: each country's hazard picture and energy mix, with its current threat reading.</li>
+        <li><a href="https://eventhorizon.fysh.site/volcanoes/">Supervolcanoes and large calderas</a>: Yellowstone, Campi Flegrei, Taupo and the rest, with their current status.</li>
+        <li><a href="https://eventhorizon.fysh.site/prepare/">Prepare</a>: official guidance for every hazard on the map, gathered in one place, so you can read what to do before you need it.</li>
+        <li><a href="https://eventhorizon.fysh.site/predictions/">Predictions and track record</a>: what the forecasts said, and how often they turned out right.</li>
+        <li><a href="https://eventhorizon.fysh.site/docs/">Documentation</a>: how the map works, where each number comes from and what the threat levels mean.</li>
+      </ul>
+    </section>
+
+    <section style="--c:#ef4444">
+      <h2><span class="dot"></span>Red Rocket</h2>
+      <p><a href="https://redrocket.fysh.site/">Red Rocket</a> is an Android app for the moment an emergency alert goes off. You're not going to write a message during an earthquake, so you write it now, once, while nothing's happening. When a real alert arrives on your phone and matches a scenario you set up, Red Rocket texts the people you picked, whether or not the phone's in your hand.</p>
+      <p>Each scenario holds groups, and each group gets its own message: family gets the one about the spare key, coworkers get the one about the shift. Contacts reply with a single digit (1 safe, 2 safe and wants updates, 3 emergency), and the dashboard shows who's answered and who hasn't.</p>
+      <p>Firing is deliberately hard, because a false alarm does more damage than a missed one. It runs eight checks before sending anything: test and drill broadcasts stop it dead, phrases like "this is a test" cancel a match, and it weighs where the alert came from, since a government cell broadcast isn't the same as a push from a news app. Built-in presets cover 14 disaster categories with keywords in 22 languages across 35 countries. No accounts, no servers: everything runs on your phone.</p>
+    </section>
+
+    <section style="--c:#8b5cf6">
+      <h2><span class="dot"></span>Warp Gate</h2>
+      <p><a href="https://warpgate.fysh.site/">Warp Gate</a> sends files, photos, passwords or plain messages straight between two browsers, without uploading them anywhere. Open a gate and you get a link and a QR code. The other device scans or pastes it and the two connect directly, end to end encrypted.</p>
+      <p>The server only introduces the two browsers and then gets out of the way, so your files never touch it. The secret in the link is made in your browser and never sent to the server. When you're done, you burn the gate, and the keys, messages and room are gone. There's no account, no file size cap, and no third-party script on any page that handles your data. That's enforced by the browser, not just promised.</p>
+      <p>It's handy for moving a file from your phone to your laptop, handing a friend a big video, or sending a password to a family member without it sitting in a chat history forever.</p>
+    </section>
+
+    <section>
+      <h2>Who makes this</h2>
+      <p>All of it is built and run by one person, on hardware at home rather than a big cloud provider. Some pages carry ads, and there's a tip jar on <a href="https://ko-fi.com/fysh_yum">Ko-fi</a>. That's what pays for the servers and keeps the tools free. Read <a href="/about">more about Fysh</a>, the <a href="/privacy">privacy policy</a>, or <a href="/contact">get in touch</a>.</p>
+    </section>
+  </div>
   <div class="foot">
     <span>&copy; 2026 Fysh</span>
+    <a href="/about">About</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/contact">Contact</a>
   </div>
   <div class="projectModal" id="projectModal">
     <div class="backdrop" id="pmBackdrop"></div>
@@ -3214,7 +3275,7 @@ var qrcode = function() {
 
   /* ---------- project info modal ---------- */
   var PROJECTS_C = {
-    ehw: { name: 'Event Horizon Web', tag: 'AGPL-3.0 · event monitor', c: '#f5a524', href: 'https://event-horizon.fysh.site', desc: "Watches for events worth knowing about and surfaces them before you'd have found them yourself. Still rough at the edges. AGPL-3.0." },
+    ehw: { name: 'Event Horizon Web', tag: 'AGPL-3.0 · event monitor', c: '#f5a524', href: 'https://eventhorizon.fysh.site', desc: "Watches for events worth knowing about and surfaces them before you'd have found them yourself: earthquakes, storms, wildfires, volcanoes, conflict and more on one live map. AGPL-3.0." },
     rr: { name: 'Red Rocket', tag: 'AGPL-3.0 · android', c: '#ef4444', href: 'https://redrocket.fysh.site', desc: 'An Android app, open source under AGPL-3.0. Download it at redrocket.fysh.site; source and releases live on GitHub.' },
     wg: { name: 'Warp Gate', tag: 'AGPL-3.0 · file transfer', c: '#8b5cf6', href: 'https://warpgate.fysh.site', desc: "Send files between your own devices without routing them through someone else's cloud. AGPL-3.0, self-hosted." }
   };
