@@ -1,10 +1,10 @@
 {
-  "versionCode": 23,
-  "versionName": "1.4.15",
-  "notes": "Chats update again: Instagram moved where messages are read from, so sent messages and new chats showed up late or never",
-  "sha256": "5d6974c10bc55b2469c13a063b8a184aed4b599d059013f4955621b0be7ea540",
+  "versionCode": 24,
+  "versionName": "1.4.16",
+  "notes": "Follow and unfollow work again on profiles.",
+  "sha256": "9ab273c0bcf437f8ced8cb46c75458578b7b3f41bd981adb558f104b7d119de7",
   "apk": [
     "https://fysh.site/otg/on-the-go.apk",
-    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.15/on-the-go-1.4.15.apk"
+    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.16/on-the-go-1.4.16.apk"
   ]
 }
