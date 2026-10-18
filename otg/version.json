@@ -1,10 +1,10 @@
 {
-  "versionCode": 24,
-  "versionName": "1.4.16",
-  "notes": "Follow and unfollow work again on profiles.",
-  "sha256": "9ab273c0bcf437f8ced8cb46c75458578b7b3f41bd981adb558f104b7d119de7",
+  "versionCode": 25,
+  "versionName": "1.4.17",
+  "notes": "Send to all your chats, not just the latest 15. Posts say who reposted them. Saved posts play their videos and show every picture again.",
+  "sha256": "e395a10681da3210568dcb393e75a6344c867b3cf81e04f45c42f644eff1ab87",
   "apk": [
     "https://fysh.site/otg/on-the-go.apk",
-    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.16/on-the-go-1.4.16.apk"
+    "https://github.com/Fysh-ball/on-the-go/releases/download/v1.4.17/on-the-go-1.4.17.apk"
   ]
 }
