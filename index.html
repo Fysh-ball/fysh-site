@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fysh — An ocean of possibilities</title>
-<meta name="description" content="Fysh builds small, focused open-source tools: Event Horizon Web (AGPL-3.0 event monitor), Red Rocket (AGPL-3.0 Android app), and Warp Gate (AGPL-3.0 file transfer).">
+<meta name="description" content="Fysh builds small, focused open-source tools: Event Horizon Web (AGPL-3.0 event monitor), Red Rocket (AGPL-3.0 Android app), Warp Gate (AGPL-3.0 file transfer), and Bunker (GPL-3.0 Android privacy).">
 <link rel="canonical" href="https://fysh.site/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://fysh.site/">
 <meta property="og:site_name" content="Fysh">
 <meta property="og:title" content="Fysh — An ocean of possibilities">
-<meta property="og:description" content="Fysh builds small, focused open-source tools: Event Horizon Web, Red Rocket, and Warp Gate.">
+<meta property="og:description" content="Fysh builds small, focused open-source tools: Event Horizon Web, Red Rocket, Warp Gate, and Bunker.">
 <meta property="og:image" content="https://fysh.site/fysh-og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Fysh — An ocean of possibilities">
-<meta name="twitter:description" content="Fysh builds small, focused open-source tools: Event Horizon Web, Red Rocket, and Warp Gate.">
+<meta name="twitter:description" content="Fysh builds small, focused open-source tools: Event Horizon Web, Red Rocket, Warp Gate, and Bunker.">
 <meta name="twitter:image" content="https://fysh.site/fysh-og.png">
 <style>
   :root { color-scheme: dark; }
@@ -187,9 +187,10 @@
     <p>An ocean of possibilities.</p>
   </div>
   <div class="list" id="chipListC">
-    <a class="chip" href="https://eventhorizon.fysh.site" data-key="ehw" style="--c:#f5a524"><span class="dot"></span>Event Horizon Web</a>
+    <a class="chip" href="https://eventhorizon.fysh.site" data-key="ehw" style="--c:#22c55e"><span class="dot"></span>Event Horizon Web</a>
     <a class="chip" href="https://redrocket.fysh.site" data-key="rr" style="--c:#ef4444"><span class="dot"></span>Red Rocket</a>
     <a class="chip" href="https://warpgate.fysh.site" data-key="wg" style="--c:#8b5cf6"><span class="dot"></span>Warp Gate</a>
+    <a class="chip" href="https://github.com/Fysh-ball/Bunker" data-key="bk" style="--c:#3b82f6"><span class="dot"></span>Bunker</a>
   </div>
   <div class="list iconsBelow">
     <a class="chip" href="https://lumishark.com" style="--c:#ff8fbd"><span class="chipIcon" aria-hidden="true">&#x1F988;</span>Lumi</a>
@@ -201,11 +202,11 @@
   <div class="info">
     <section>
       <h2>What's here</h2>
-      <p>Fysh is a one-person workshop for small, free tools that do one job properly. Each one exists because I wanted it and couldn't find a version I trusted. They're all open source under the AGPL-3.0, so the code is on <a href="https://github.com/Fysh-ball">GitHub</a> for anyone to read, run or fix.</p>
+      <p>Fysh is a one-person workshop for small, free tools that do one job properly. Each one exists because I wanted it and couldn't find a version I trusted. They're all open source (AGPL-3.0 or GPL-3.0), so the code is on <a href="https://github.com/Fysh-ball">GitHub</a> for anyone to read, run or fix.</p>
       <p>Nothing here needs an account to use. Below is what each tool does, who it's for and where to start.</p>
     </section>
 
-    <section style="--c:#f5a524">
+    <section style="--c:#22c55e">
       <h2><span class="dot"></span>Event Horizon Web</h2>
       <p><a href="https://eventhorizon.fysh.site/">Event Horizon Web</a> is a live map of what's going wrong on the planet right now. It pulls earthquakes from USGS, EMSC and GeoNet, severe weather warnings from the US National Weather Service and Environment Canada, hurricane tracks from the National Hurricane Center, wildfire detections from NASA's FIRMS satellites, volcano reports, tsunami warnings, space weather from NOAA's Space Weather Prediction Center, flood alerts from GDACS, and armed conflict data from UCDP and GDELT. Each source is checked every 1 to 60 minutes, and everything lands on one map you can filter by type, severity and time.</p>
       <p>It's for anyone who'd rather know early: people with family abroad, people who travel, people who live on a fault line or a coast. You can turn on free push alerts for the countries and kinds of event you care about, with quiet hours, and there's nothing to sign up for.</p>
@@ -232,6 +233,12 @@
       <p><a href="https://warpgate.fysh.site/">Warp Gate</a> sends files, photos, passwords or plain messages straight between two browsers, without uploading them anywhere. Open a gate and you get a link and a QR code. The other device scans or pastes it and the two connect directly, end to end encrypted.</p>
       <p>The server only introduces the two browsers and then gets out of the way, so your files never touch it. The secret in the link is made in your browser and never sent to the server. When you're done, you burn the gate, and the keys, messages and room are gone. There's no account, no file size cap, and no third-party script on any page that handles your data. That's enforced by the browser, not just promised.</p>
       <p>It's handy for moving a file from your phone to your laptop, handing a friend a big video, or sending a password to a family member without it sitting in a chat history forever.</p>
+    </section>
+
+    <section style="--c:#3b82f6">
+      <h2><span class="dot"></span>Bunker</h2>
+      <p><a href="https://github.com/Fysh-ball/Bunker">Bunker</a> turns Android's work profile into a privacy tool. Apps you don't trust go in, and while they're in there you decide what they can run, what they can see, and whether they get a network at all. It's a fork of Shelter, GPL-3.0 like its parent.</p>
+      <p>Apps inside sleep when the screen goes off and wake when you unlock, so they can't run in the background. Sleeping apps keep their icon, greyed out, so your launcher and folders stay the way you set them. Any app can be cut off from the internet while staying installed, and it's enforced by the routing table, so the app can't switch it back on. No root, no Shizuku, no telemetry.</p>
     </section>
 
     <section>
@@ -3276,9 +3283,10 @@ var qrcode = function() {
 
   /* ---------- project info modal ---------- */
   var PROJECTS_C = {
-    ehw: { name: 'Event Horizon Web', tag: 'AGPL-3.0 · event monitor', c: '#f5a524', href: 'https://eventhorizon.fysh.site', desc: "Watches for events worth knowing about and surfaces them before you'd have found them yourself: earthquakes, storms, wildfires, volcanoes, conflict and more on one live map. AGPL-3.0." },
+    ehw: { name: 'Event Horizon Web', tag: 'AGPL-3.0 · event monitor', c: '#22c55e', href: 'https://eventhorizon.fysh.site', desc: "Watches for events worth knowing about and surfaces them before you'd have found them yourself: earthquakes, storms, wildfires, volcanoes, conflict and more on one live map. AGPL-3.0." },
     rr: { name: 'Red Rocket', tag: 'AGPL-3.0 · android', c: '#ef4444', href: 'https://redrocket.fysh.site', desc: 'An Android app, open source under AGPL-3.0. Download it at redrocket.fysh.site; source and releases live on GitHub.' },
-    wg: { name: 'Warp Gate', tag: 'AGPL-3.0 · file transfer', c: '#8b5cf6', href: 'https://warpgate.fysh.site', desc: "Send files between your own devices without routing them through someone else's cloud. AGPL-3.0, self-hosted." }
+    wg: { name: 'Warp Gate', tag: 'AGPL-3.0 · file transfer', c: '#8b5cf6', href: 'https://warpgate.fysh.site', desc: "Send files between your own devices without routing them through someone else's cloud. AGPL-3.0, self-hosted." },
+    bk: { name: 'Bunker', tag: 'GPL-3.0 · android', c: '#3b82f6', href: 'https://github.com/Fysh-ball/Bunker', desc: "Work profile privacy for Android: untrusted apps sleep with the screen, and any of them can be cut off from the internet. A fork of Shelter. GPL-3.0." }
   };
   var pmEl = document.getElementById('projectModal'), pmDot = document.getElementById('pmDot'),
     pmName = document.getElementById('pmName'), pmTag = document.getElementById('pmTag'),
